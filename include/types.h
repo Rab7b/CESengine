@@ -8,6 +8,7 @@
 namespace ces {
 	using Entity = uint32_t;
 	inline constexpr int maxEntities = 1000;
+	inline constexpr Entity invalidEntity = 0xFFFFFFFF;
 
 	struct Position {
 		float x, y;

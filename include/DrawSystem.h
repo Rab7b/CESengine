@@ -1,6 +1,6 @@
 #pragma once
 #include "System.h"
-#include "types.h"
+#include "include/types.h"
 #include <SFML/Graphics.hpp>
 
 namespace ces {
@@ -12,11 +12,9 @@ namespace ces {
         DrawSystem(ces::Registry& r, ces::RenderWindow& win) : ces::System(r), window(win) {}
 
         void runIt(ces::Entity& en) override {
-            ces::Position& pos = reg.getPosByEntity(en);
-            ces::Visual& vis = reg.getVisByEntity(en);
+            ces::Visual& vis = reg.getVisual(en);
 
             if (vis.it) {
-                vis.it->setPosition({ pos.x, pos.y });
                 window.draw(*vis.it);
             }
         }

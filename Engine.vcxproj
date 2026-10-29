@@ -144,18 +144,18 @@
   <ItemGroup>
     <ClCompile Include="Engine.cpp" />
     <ClCompile Include="Registry.cpp" />
-    <ClCompile Include="types.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="vcpkg.json" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="DrawSystem.h" />
-    <ClInclude Include="Engine.h" />
-    <ClInclude Include="KeyboardSystem.h" />
-    <ClInclude Include="MovementSystem.h" />
-    <ClInclude Include="Registry.h" />
-    <ClInclude Include="System.h" />
+    <ClInclude Include="include\DrawSystem.h" />
+    <ClInclude Include="include\Engine.h" />
+    <ClInclude Include="include\KeyboardSystem.h" />
+    <ClInclude Include="include\MovementSystem.h" />
+    <ClInclude Include="include\Registry.h" />
+    <ClInclude Include="include\System.h" />
+    <ClInclude Include="include\types.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -1,50 +1,51 @@
 #pragma once
+
 #include <vector>
+#include <memory>
+#include <bitset>
+#include <cstdint>
+#include <stdexcept>
 #include "types.h"
-#include <algorithm>
-#include <iostream>
 
 namespace ces {
-	class Registry
-	{
-	private:
-		std::vector<ces::Position> positions;
-		std::vector<ces::Velocity> velocities;
-		std::vector<ces::Visual> visuals;
 
-		ces::Entity entityCount;
-		std::vector<ces::Entity> freeIds;
+    class Registry {
+    private:
+        std::bitset<maxEntities> aliveStatus;
+        ces::Entity nextId = 0;
+        std::vector<ces::Entity> freeIds;
 
-	public:
-		Registry();
-		~Registry();
+        std::vector<ces::Position> transforms;
+        std::vector<ces::Velocity> velocities;
+        std::vector<std::unique_ptr<ces::Visual>> visuals;
 
-		inline ces::Entity createEntity();
-		inline void destroyEntity(ces::Entity e);
+        std::bitset<maxEntities> hasTransform;
+        std::bitset<maxEntities> hasVelocity;
+        std::bitset<maxEntities> hasVisual;
 
-		inline ces::Position& getPosByEntity(ces::Entity e) {
-			return this->positions[e]; 
-		}
-		inline ces::Velocity& getVelByEntity(Entity e) {
-			return this->velocities[e]; 
-		}
-		inline ces::Visual& getVisByEntity(ces::Entity e) {
-			return this->visuals[e]; 
-		}
-		inline std::vector<ces::Position>& getAllPositions() {
-			return this->positions; 
-		}
-		inline std::vector<ces::Velocity>& getAllVelocities() {
-			return this->velocities; 
-		}
-		inline std::vector<ces::Visual>& getAllVisuals() {
-			return this->visuals; 
-		}
+    public:
+        Registry();
+        ~Registry();
 
-		inline ces::Entity getEntitiesCount() {
-			return this->entityCount; 
-		}
-	};
+        ces::Entity createEntity();
+        void destroyEntity(ces::Entity entity);
+        bool isAlive(ces::Entity entity) const;
+
+        void setTransform(ces::Entity entity, const ces::Position& t);
+        void setVelocity(ces::Entity entity, const ces::Velocity& v);
+
+        template<typename... Args>
+        void assignVisual(ces::Entity entity, Args&&... args) {
+            if (!isAlive(entity)) return;
+            visuals[entity] = std::make_unique<ces::Visual>(std::forward<Args>(args)...);
+            hasVisual.set(entity, true);
+        }
+
+        ces::Position& getPosition(ces::Entity entity);
+        ces::Velocity& getVelocity(ces::Entity entity);
+        ces::Visual& getVisual(ces::Entity entity);
+
+        void updateMovement();
+        ces::Entity getEntitiesCount() const;
+    };
 }
-
-#include "Registry.cpp"

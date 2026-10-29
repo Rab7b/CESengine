@@ -1,42 +1,92 @@
-#pragma once
-#include "Registry.h"
+#include "include/Registry.h"
 
-inline ces::Registry::Registry() {
-	this->entityCount = 0;
+namespace ces {
+    Registry::Registry() {
+        this->nextId = 0;
+        this->transforms.resize(maxEntities);
+        this->velocities.resize(maxEntities);
+        this->visuals.resize(maxEntities);
+    }
 
-	this->positions.resize(maxEntities);
-	this->velocities.resize(maxEntities);
-	this->visuals.resize(maxEntities);
+    Registry::~Registry() {
+        this->nextId = 0;
+    }
 
-	for (int i = maxEntities - 1; i >= 0; i--) {
-		this->freeIds.emplace_back(static_cast<ces::Entity>(i));
+    ces::Entity Registry::createEntity() {
+        ces::Entity id;
+        if (!freeIds.empty()) {
+            id = freeIds.back();
+            freeIds.pop_back();
+        }
+        else {
+            if (nextId >= maxEntities) {
+                throw std::runtime_error("ECS Error: Exceeded maximum entity capacity!");
+            }
+            id = nextId++;
+        }
 
-		this->positions[i] = {};
-		this->velocities[i] = {};
-		this->visuals[i] = {};
-	}
-}
+        aliveStatus.set(id, true);
+        hasTransform.reset(id);
+        hasVelocity.reset(id);
+        hasVisual.reset(id);
+        return id;
+    }
 
-inline ces::Registry::~Registry() {
-	this->entityCount = 0;
-}
+    void Registry::destroyEntity(ces::Entity entity) {
+        if (!isAlive(entity)) {
+            throw std::runtime_error("ECS Error: Invalid or destroyed entity reference!");
+        }
 
-inline ces::Entity ces::Registry::createEntity() {
-	if (!this->freeIds.empty() && this->entityCount < maxEntities) {
-		ces::Entity id = this->freeIds.back();
-		this->freeIds.pop_back();
+        aliveStatus.set(entity, false);
+        hasTransform.reset(entity);
+        hasVelocity.reset(entity);
+        hasVisual.reset(entity);
 
-		this->entityCount++;
-		return id;
-	}
-	return static_cast<ces::Entity>(-1);
-}
+        transforms[entity] = {};
+        velocities[entity] = {};
+        visuals[entity].reset();
 
-inline void ces::Registry::destroyEntity(ces::Entity e) {
-	this->positions[e] = {};
-	this->velocities[e] = {};
-	this->visuals[e] = {};
+        freeIds.push_back(entity);
+    }
 
-	this->freeIds.push_back(e);
-	this->entityCount--;
+    bool Registry::isAlive(ces::Entity entity) const {
+        return entity < maxEntities && aliveStatus.test(entity);
+    }
+
+    void Registry::setTransform(ces::Entity entity, const ces::Position& t) {
+        if (!isAlive(entity)) return;
+        transforms[entity] = t;
+        hasTransform.set(entity, true);
+    }
+
+    void Registry::setVelocity(ces::Entity entity, const ces::Velocity& v) {
+        if (!isAlive(entity)) return;
+        velocities[entity] = v;
+        hasVelocity.set(entity, true);
+    }
+
+    ces::Position& Registry::getPosition(ces::Entity entity) {
+        return transforms[entity];
+    }
+
+    ces::Velocity& Registry::getVelocity(ces::Entity entity) {
+        return velocities[entity];
+    }
+
+    ces::Visual& Registry::getVisual(ces::Entity entity) {
+        return *visuals[entity];
+    }
+
+    void Registry::updateMovement() {
+        for (ces::Entity i = 0; i < nextId; ++i) {
+            if (aliveStatus.test(i) && hasTransform.test(i) && hasVelocity.test(i)) {
+                transforms[i].x += velocities[i].vx;
+                transforms[i].y += velocities[i].vy;
+            }
+        }
+    }
+
+    ces::Entity Registry::getEntitiesCount() const {
+        return this->nextId;
+    }
 }

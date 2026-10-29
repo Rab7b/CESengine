@@ -9,8 +9,8 @@ namespace ces {
         using ces::System::System;
 
         void runIt(ces::Entity& en) override {
-            ces::Position& pos = reg.getPosByEntity(en);
-            ces::Velocity& vel = reg.getVelByEntity(en);
+            ces::Position& pos = reg.getPosition(en);
+            ces::Velocity& vel = reg.getVelocity(en);
 
             pos.x += vel.vx;
             pos.y += vel.vy;
