@@ -1,4 +1,4 @@
-#include "Registry.h"
+#include "include/Registry.h"
 
 namespace ces {
 
@@ -11,87 +11,68 @@ namespace ces {
 
     ces::Entity Registry::createEntity() {
         ces::Entity id;
-        if (!freeIds.empty()) {
-            id = freeIds.back();
-            freeIds.pop_back();
-        } else {
-            if (nextId >= maxEntities) {
+        if (!this->freeIds.empty()) {
+            id = this->freeIds.back();
+            this->freeIds.pop_back();
+        }
+        else {
+            if (this->nextId >= maxEntities) {
                 throw std::runtime_error("ECS Error: Exceeded maximum entity capacity!");
             }
-            id = nextId++;
+            id = this->nextId++;
         }
 
-        aliveStatus.set(id, true);
-        hasTransform.reset(id);
-        hasVelocity.reset(id);
-        hasVisual.reset(id);
+        this->aliveStatus.set(id, true);
+        this->hasTransform.reset(id);
+        this->hasVelocity.reset(id);
+        this->hasVisual.reset(id);
         return id;
     }
 
     void Registry::destroyEntity(ces::Entity entity) {
-        if (!isAlive(entity)) return;
+        if (!this->isAlive(entity)) return;
 
-        aliveStatus.set(entity, false);
-        hasTransform.reset(entity);
-        hasVelocity.reset(entity);
-        hasVisual.reset(entity);
+        this->aliveStatus.set(entity, false);
+        this->hasTransform.reset(entity);
+        this->hasVelocity.reset(entity);
+        this->hasVisual.reset(entity);
 
-        transforms[entity] = {};
-        velocities[entity] = {};
-        visuals[entity] = {};
+        this->transforms[entity] = {};
+        this->velocities[entity] = {};
+        this->visuals[entity].reset();
 
-        freeIds.push_back(entity);
+        this->freeIds.push_back(entity);
     }
 
     bool Registry::isAlive(ces::Entity entity) const {
-        return entity < maxEntities && aliveStatus.test(entity);
+        return entity < maxEntities && this->aliveStatus.test(entity);
     }
 
     void Registry::setTransform(ces::Entity entity, const ces::Position& t) {
-        if (!isAlive(entity)) return;
-        transforms[entity] = t;
-        hasTransform.set(entity, true);
+        if (!this->isAlive(entity)) return;
+        this->transforms[entity] = t;
+        this->hasTransform.set(entity, true);
     }
 
     void Registry::setVelocity(ces::Entity entity, const ces::Velocity& v) {
-        if (!isAlive(entity)) return;
-        velocities[entity] = v;
-        hasVelocity.set(entity, true);
-    }
-
-    void Registry::setVisual(ces::Entity entity, const ces::Visual& vis) {
-        if (!isAlive(entity)) return;
-        visuals[entity] = vis;
-        hasVisual.set(entity, true);
+        if (!this->isAlive(entity)) return;
+        this->velocities[entity] = v;
+        this->hasVelocity.set(entity, true);
     }
 
     ces::Position& Registry::getPosition(ces::Entity entity) {
-        if (!hasTransform.test(entity)) throw std::runtime_error("No Transform Component!");
-        return transforms[entity];
+        if (!this->hasTransform.test(entity)) throw std::runtime_error("No Transform Component!");
+        return this->transforms[entity];
     }
 
     ces::Velocity& Registry::getVelocity(ces::Entity entity) {
-        if (!hasVelocity.test(entity)) throw std::runtime_error("No Velocity Component!");
-        return velocities[entity];
+        if (!this->hasVelocity.test(entity)) throw std::runtime_error("No Velocity Component!");
+        return this->velocities[entity];
     }
 
     ces::Visual& Registry::getVisual(ces::Entity entity) {
-        if (!hasVisual.test(entity)) throw std::runtime_error("No Visual Component!");
-        return visuals[entity];
-    }
-
-    void Registry::updateMovement() {
-        auto activeMovementMask = aliveStatus & hasTransform & hasVelocity;
-
-        ces::Position* posPtr = transforms.data();
-        ces::Velocity* velPtr = velocities.data();
-
-        for (ces::Entity i = 0; i < nextId; ++i) {
-            if (activeMovementMask.test(i)) {
-                posPtr[i].x += velPtr[i].vx;
-                posPtr[i].y += velPtr[i].vy;
-            }
-        }
+        if (!this->hasVisual.test(entity)) throw std::runtime_error("No Visual Component!");
+        return *this->visuals[entity];
     }
 
     ces::Entity Registry::getEntitiesCount() const {

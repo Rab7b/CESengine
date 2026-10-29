@@ -1,0 +1,14 @@
+{
+    "version": 1,
+    "revision": 0,
+    "rules": [
+        {
+            "primary-output": "Engine\\x64\\Release\\Registry.obj",
+            "outputs": [
+                "Engine\\x64\\Release\\Registry.cpp.obj.dt.module.json",
+                "Engine\\x64\\Release\\Registry.cpp.obj.dt.d.json"
+            ],
+            "requires": []
+        }
+    ]
+}

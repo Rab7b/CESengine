@@ -1,0 +1,14 @@
+{
+    "version": 1,
+    "revision": 0,
+    "rules": [
+        {
+            "primary-output": "Engine\\x64\\Debug\\MovementSystem.obj",
+            "outputs": [
+                "Engine\\x64\\Debug\\MovementSystem.cpp.obj.dt.module.json",
+                "Engine\\x64\\Debug\\MovementSystem.cpp.obj.dt.d.json"
+            ],
+            "requires": []
+        }
+    ]
+}

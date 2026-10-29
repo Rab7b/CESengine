@@ -1,6 +1,6 @@
 #pragma once
-
 #include <vector>
+#include <memory>
 #include <bitset>
 #include <cstdint>
 #include <stdexcept>
@@ -16,29 +16,34 @@ namespace ces {
 
         std::vector<ces::Position> transforms;
         std::vector<ces::Velocity> velocities;
-        std::vector<ces::Visual> visuals;
+        std::vector<std::optional<ces::Visual>> visuals;
 
         std::bitset<maxEntities> hasTransform;
         std::bitset<maxEntities> hasVelocity;
         std::bitset<maxEntities> hasVisual;
 
     public:
-        Registry();
-        ~Registry() = default;
+        inline Registry();
+        inline ~Registry() = default;
 
-        ces::Entity createEntity();
-        void destroyEntity(ces::Entity entity);
-        bool isAlive(ces::Entity entity) const;
+        inline ces::Entity createEntity();
+        inline void destroyEntity(ces::Entity entity);
+        inline bool isAlive(ces::Entity entity) const;
 
-        void setTransform(ces::Entity entity, const ces::Position& t);
-        void setVelocity(ces::Entity entity, const ces::Velocity& v);
-        void setVisual(ces::Entity entity, const ces::Visual& vis);
+        inline void setTransform(ces::Entity entity, const ces::Position& t);
+        inline void setVelocity(ces::Entity entity, const ces::Velocity& v);
 
-        ces::Position& getPosition(ces::Entity entity);
-        ces::Velocity& getVelocity(ces::Entity entity);
-        ces::Visual& getVisual(ces::Entity entity);
+        template<typename... Args>
+        inline void assignVisual(ces::Entity entity, Args&&... args) {
+            if (!isAlive(entity)) return;
+            visuals[entity] = std::make_unique<ces::Visual>(std::forward<Args>(args)...);
+            hasVisual.set(entity, true);
+        }
 
-        void updateMovement();
-        ces::Entity getEntitiesCount() const;
+        inline ces::Position& getPosition(ces::Entity entity);
+        inline ces::Velocity& getVelocity(ces::Entity entity);
+        inline ces::Visual& getVisual(ces::Entity entity);
+
+        inline ces::Entity getEntitiesCount() const;
     };
 }

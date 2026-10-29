@@ -32,10 +32,10 @@ namespace ces {
 
     public:
 
-        Engine(const ces::Engine&) = delete;
-        Engine& operator=(const ces::Engine&) = delete;
-        Engine(ces::Engine&&) = delete;
-        Engine& operator=(ces::Engine&&) = delete;
+        inline Engine(const ces::Engine&) = delete;
+        inline Engine& operator=(const ces::Engine&) = delete;
+        inline Engine(ces::Engine&&) = delete;
+        inline Engine& operator=(ces::Engine&&) = delete;
 
         inline static ces::Engine& getInstance() {
             static ces::Engine instance;

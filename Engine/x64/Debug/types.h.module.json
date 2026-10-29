@@ -1,0 +1,22 @@
+{
+    "version": 1,
+    "revision": 0,
+    "rules": [
+        {
+            "primary-output": "Engine\\x64\\Debug\\types.h.obj",
+            "outputs": [
+                "E:\\Engine\\Engine\\x64\\Debug\\vc145.pdb",
+                "Engine\\x64\\Debug\\",
+                "E:\\Engine\\Engine\\x64\\Debug\\types.h.ifc"
+            ],
+            "provides": [
+                {
+                    "logical-name": "types.h",
+                    "source-path": "e:\\engine\\types.h",
+                    "lookup-method": "absolute"
+                }
+            ],
+            "requires": []
+        }
+    ]
+}

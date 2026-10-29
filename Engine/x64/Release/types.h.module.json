@@ -1,0 +1,22 @@
+{
+    "version": 1,
+    "revision": 0,
+    "rules": [
+        {
+            "primary-output": "Engine\\x64\\Release\\types.h.obj",
+            "outputs": [
+                "E:\\Engine\\x64\\Release\\Engine.pdb",
+                "Engine\\x64\\Release\\",
+                "E:\\Engine\\Engine\\x64\\Release\\types.h.ifc"
+            ],
+            "provides": [
+                {
+                    "logical-name": "types.h",
+                    "source-path": "e:\\engine\\types.h",
+                    "lookup-method": "absolute"
+                }
+            ],
+            "requires": []
+        }
+    ]
+}
