@@ -132,11 +132,3 @@ int main() {
     return 0;
 }
 ```
-
----
-
-## 🔒 License
-
-Copyright (c) 2026 Liquid Studio (Denys Korolyuk). All rights reserved.
-
-This engine and its source binaries are proprietary software. Unauthorized copying, distribution, or modification without prior written consent is strictly prohibited.
