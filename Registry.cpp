@@ -1,6 +1,7 @@
-#include "include/Registry.h"
+#include "Registry.h"
 
 namespace ces {
+
     Registry::Registry() {
         this->nextId = 0;
         this->transforms.resize(maxEntities);
@@ -8,17 +9,12 @@ namespace ces {
         this->visuals.resize(maxEntities);
     }
 
-    Registry::~Registry() {
-        this->nextId = 0;
-    }
-
     ces::Entity Registry::createEntity() {
         ces::Entity id;
         if (!freeIds.empty()) {
             id = freeIds.back();
             freeIds.pop_back();
-        }
-        else {
+        } else {
             if (nextId >= maxEntities) {
                 throw std::runtime_error("ECS Error: Exceeded maximum entity capacity!");
             }
@@ -33,9 +29,7 @@ namespace ces {
     }
 
     void Registry::destroyEntity(ces::Entity entity) {
-        if (!isAlive(entity)) {
-            throw std::runtime_error("ECS Error: Invalid or destroyed entity reference!");
-        }
+        if (!isAlive(entity)) return;
 
         aliveStatus.set(entity, false);
         hasTransform.reset(entity);
@@ -44,7 +38,7 @@ namespace ces {
 
         transforms[entity] = {};
         velocities[entity] = {};
-        visuals[entity].reset();
+        visuals[entity] = {};
 
         freeIds.push_back(entity);
     }
@@ -65,23 +59,37 @@ namespace ces {
         hasVelocity.set(entity, true);
     }
 
+    void Registry::setVisual(ces::Entity entity, const ces::Visual& vis) {
+        if (!isAlive(entity)) return;
+        visuals[entity] = vis;
+        hasVisual.set(entity, true);
+    }
+
     ces::Position& Registry::getPosition(ces::Entity entity) {
+        if (!hasTransform.test(entity)) throw std::runtime_error("No Transform Component!");
         return transforms[entity];
     }
 
     ces::Velocity& Registry::getVelocity(ces::Entity entity) {
+        if (!hasVelocity.test(entity)) throw std::runtime_error("No Velocity Component!");
         return velocities[entity];
     }
 
     ces::Visual& Registry::getVisual(ces::Entity entity) {
-        return *visuals[entity];
+        if (!hasVisual.test(entity)) throw std::runtime_error("No Visual Component!");
+        return visuals[entity];
     }
 
     void Registry::updateMovement() {
+        auto activeMovementMask = aliveStatus & hasTransform & hasVelocity;
+
+        ces::Position* posPtr = transforms.data();
+        ces::Velocity* velPtr = velocities.data();
+
         for (ces::Entity i = 0; i < nextId; ++i) {
-            if (aliveStatus.test(i) && hasTransform.test(i) && hasVelocity.test(i)) {
-                transforms[i].x += velocities[i].vx;
-                transforms[i].y += velocities[i].vy;
+            if (activeMovementMask.test(i)) {
+                posPtr[i].x += velPtr[i].vx;
+                posPtr[i].y += velPtr[i].vy;
             }
         }
     }
