@@ -16,7 +16,7 @@ namespace ces {
 
         std::vector<ces::Position> transforms;
         std::vector<ces::Velocity> velocities;
-        std::vector<std::optional<ces::Visual>> visuals;
+        std::vector<ces::Visual> visuals;
 
         std::bitset<maxEntities> hasTransform;
         std::bitset<maxEntities> hasVelocity;
@@ -35,6 +35,11 @@ namespace ces {
 
         template<typename ShapeType, typename... Args>
         inline void assignVisual(ces::Entity entity, Args&&... args) {
+            if (!isAlive(entity)) return;
+            
+            visuals[entity].emplace(Visual{ ShapeType(std::forward<Args>(args)...) });
+    
+            hasVisual.set(entity, true);
             if (!this->isAlive(entity)) return;
 
             this->visuals[entity].emplace(Visual{ ShapeType(std::forward<Args>(args)...) });
