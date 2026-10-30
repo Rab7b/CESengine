@@ -35,15 +35,8 @@ namespace ces {
 
         template<typename ShapeType, typename... Args>
         inline void assignVisual(ces::Entity entity, Args&&... args) {
-            if (!isAlive(entity)) return;
-            
-            visuals[entity].emplace(Visual{ ShapeType(std::forward<Args>(args)...) });
-    
-            hasVisual.set(entity, true);
             if (!this->isAlive(entity)) return;
 
-            this->visuals[entity].emplace(Visual{ ShapeType(std::forward<Args>(args)...) });
-            
             this->visuals[entity].it.emplace<ShapeType>(std::forward<Args>(args)...);
             this->hasVisual.set(entity, true);
         }
