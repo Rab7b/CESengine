@@ -36,9 +36,10 @@ namespace ces {
         template<typename... Args>
         inline void assignVisual(ces::Entity entity, Args&&... args) {
             if (!isAlive(entity)) return;
-            visuals[entity] = std::make_unique<ces::Visual>(std::forward<Args>(args)...);
+            visuals[entity].emplace(std::forward<Args>(args)...);
             hasVisual.set(entity, true);
         }
+
 
         inline ces::Position& getPosition(ces::Entity entity);
         inline ces::Velocity& getVelocity(ces::Entity entity);
