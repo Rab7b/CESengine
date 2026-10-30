@@ -33,12 +33,15 @@ namespace ces {
         inline void setTransform(ces::Entity entity, const ces::Position& t);
         inline void setVelocity(ces::Entity entity, const ces::Velocity& v);
 
-        template<typename... Args>
+        template<typename ShapeType, typename... Args>
         inline void assignVisual(ces::Entity entity, Args&&... args) {
-            if (!isAlive(entity)) return;
-            visuals[entity].emplace(std::forward<Args>(args)...);
-            hasVisual.set(entity, true);
+            if (!this->isAlive(entity)) return;
+            
+            this->visuals[entity].shape.emplace<ShapeType>(std::forward<Args>(args)...);
+    
+            this->hasVisual.set(entity, true);
         }
+
 
 
         inline ces::Position& getPosition(ces::Entity entity);
