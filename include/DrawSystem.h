@@ -1,6 +1,6 @@
 #pragma once
 #include "System.h"
-#include "include/types.h"
+#include "types.h"
 #include <SFML/Graphics.hpp>
 #include <variant>
 #include <type_traits>
