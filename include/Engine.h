@@ -5,6 +5,11 @@
 #include "MovementSystem.h"
 #include "Registry.h"
 
+extern "C" {
+    __declspec(dllexport) unsigned long NvOptimusEnablement = 0x00000001;     // NVIDIA
+    __declspec(dllexport) int AmdPowerXpressRequestHighPerformance = 1;       // AMD / ATI
+}
+
 namespace ces {
     class Engine {
     private:
