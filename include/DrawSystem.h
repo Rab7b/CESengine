@@ -22,7 +22,7 @@ namespace ces {
                 if constexpr (!std::is_same_v<T, std::monostate>) {
                     window.draw(shape); 
                 }
-            }, vis.shape);
+            }, vis.it);
         }
     };
 }
