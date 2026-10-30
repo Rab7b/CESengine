@@ -9,6 +9,13 @@ find_package(SFML 2.5 COMPONENTS graphics window system REQUIRED)
 
 add_library(ces_engine STATIC
     Registry.cpp
+    Registry.h
+    Engine.h
+    System.h
+    DrawSystem.h
+    MovementSystem.h
+    KeyboarSystem.h
+    types.h
 )
 
 add_library(ces::engine ALIAS ces_engine)
