@@ -3,7 +3,7 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 #include <SFML/Network.hpp>
-#include <memory>
+#include <variant>
 
 namespace ces {
 	using Entity = uint32_t;
