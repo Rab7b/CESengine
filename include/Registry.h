@@ -40,6 +40,13 @@ namespace ces {
             visuals[entity].emplace(Visual{ ShapeType(std::forward<Args>(args)...) });
     
             hasVisual.set(entity, true);
+            if (!this->isAlive(entity)) return;
+
+            this->visuals[entity].emplace(Visual{ ShapeType(std::forward<Args>(args)...) });
+            
+            this->visuals[entity].shape.emplace<ShapeType>(std::forward<Args>(args)...);
+    
+            this->hasVisual.set(entity, true);
         }
 
 
