@@ -19,7 +19,7 @@ namespace ces {
 	};
 
 	struct Visual {
-    	std::variant<sf::CircleShape, sf::RectangleShape, sf::ConvexShape> it;
+		std::variant<std::monostate, sf::CircleShape, sf::RectangleShape, sf::ConvexShape> it;
 	};
 
 	using Vector2f = sf::Vector2f;
