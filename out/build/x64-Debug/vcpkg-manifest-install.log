@@ -1,0 +1,90 @@
+Detecting compiler hash for triplet x64-windows...
+Compiler found: E:/vs/VC/Tools/MSVC/14.51.36231/bin/Hostx64/x64/cl.exe
+The following packages will be built and installed:
+  * brotli:x64-windows@1.2.0
+  * bzip2[core,tool]:x64-windows@1.0.8#6
+  * egl-registry:x64-windows@2025-05-27
+  * freetype[brotli,bzip2,core,png,zlib]:x64-windows@2.14.3
+  * libflac[core,stack-protector]:x64-windows@1.5.0
+  * libogg:x64-windows@1.3.6#1
+  * libpng:x64-windows@1.6.58
+  * libvorbis:x64-windows@1.3.7#4
+  * miniaudio:x64-windows@0.11.25
+  * opengl:x64-windows@2022-12-04#3
+  * opengl-registry:x64-windows@2026-08-03
+    sfml[audio,core,graphics,network,window]:x64-windows@3.0.2
+  * stb:x64-windows@2024-07-29#1
+  * vcpkg-cmake:x64-windows@2025-08-07
+  * vcpkg-cmake-config:x64-windows@2026-07-21
+  * zlib:x64-windows@1.3.2#2
+Additional packages (*) will be modified to complete this operation.
+Restored 16 package(s) from C:\Users\dark2\AppData\Local\vcpkg\archives in 784 ms. Use --debug to see more details.
+Installing 1/16 egl-registry:x64-windows@2025-05-27...
+egl-registry:x64-windows@2025-05-27 package ABI: 3af3a087505e35d2abd68818dd45262102afe8b036a65fc384f93a3806fde94e
+Elapsed time to handle egl-registry:x64-windows: 7.77 ms
+Installing 2/16 opengl-registry:x64-windows@2026-08-03...
+opengl-registry:x64-windows@2026-08-03 package ABI: cba240c5e6db4fba3a7a58ab24282cdde4ee9f900d7270e25ea6ed898165634c
+Elapsed time to handle opengl-registry:x64-windows: 20.6 ms
+Installing 3/16 opengl:x64-windows@2022-12-04#3...
+opengl:x64-windows@2022-12-04#3 package ABI: 49dfa021105cda0cfc16a6d4b3d2ca6772d4e61bbc5e638fdaecd7e6161858fa
+Elapsed time to handle opengl:x64-windows: 8.63 ms
+Installing 4/16 stb:x64-windows@2024-07-29#1...
+stb:x64-windows@2024-07-29#1 package ABI: 0b06cf55f4fb9b918e4310aa974e1d39aa559f2ed38ac4bade6a0de22c20de85
+Elapsed time to handle stb:x64-windows: 11.1 ms
+Installing 5/16 vcpkg-cmake-config:x64-windows@2026-07-21...
+vcpkg-cmake-config:x64-windows@2026-07-21 package ABI: 1ce3ec39d11f02e363402d580af4ae621036decb38e72036c4d51a492d8711de
+Elapsed time to handle vcpkg-cmake-config:x64-windows: 6.48 ms
+Installing 6/16 vcpkg-cmake:x64-windows@2025-08-07...
+vcpkg-cmake:x64-windows@2025-08-07 package ABI: 429a4d78fb5b0d086d890b7521326f2aa4d65dc24cb450e58a99aea3ae41f79f
+Elapsed time to handle vcpkg-cmake:x64-windows: 6.97 ms
+Installing 7/16 zlib:x64-windows@1.3.2#2...
+zlib:x64-windows@1.3.2#2 package ABI: f06c7de59b5fb016d0340094ad5bff204a74ccbb51bc3136371e801da6b45788
+Elapsed time to handle zlib:x64-windows: 153 ms
+Installing 8/16 libpng:x64-windows@1.6.58...
+libpng:x64-windows@1.6.58 package ABI: 4e82ebd5a7ca6b066cdc26e83d5880340bba6f8c4c7f71a766c9646b0af81f9c
+Elapsed time to handle libpng:x64-windows: 27.1 ms
+Installing 9/16 bzip2[core,tool]:x64-windows@1.0.8#6...
+bzip2[core,tool]:x64-windows@1.0.8#6 package ABI: 2cb5d92f21bae805c42b3e0b126fa2ef444879f6a4cbddb95736e49c92934d7a
+Elapsed time to handle bzip2:x64-windows: 27.2 ms
+Installing 10/16 brotli:x64-windows@1.2.0...
+brotli:x64-windows@1.2.0 package ABI: a481d5fb34840c81dc33c1a240fb3fc58edaf31a666a672bab3cf7c73737b59b
+Elapsed time to handle brotli:x64-windows: 93.2 ms
+Installing 11/16 freetype[brotli,bzip2,core,png,zlib]:x64-windows@2.14.3...
+freetype[brotli,bzip2,core,png,zlib]:x64-windows@2.14.3 package ABI: f096f90ab87118c70976800f28825bc202c96cce5f2ded4a39d91b1aaeff111a
+Elapsed time to handle freetype:x64-windows: 29.8 ms
+Installing 12/16 miniaudio:x64-windows@0.11.25...
+miniaudio:x64-windows@0.11.25 package ABI: 3e954a7637857b1f9a27a1ac6efa8c137e14cbb760d54a6fd748bc384ce9658e
+Elapsed time to handle miniaudio:x64-windows: 7.4 ms
+Installing 13/16 libogg:x64-windows@1.3.6#1...
+libogg:x64-windows@1.3.6#1 package ABI: 78bd48f1e48ac942bca0d151c73d17d3a0d3deab33fb47905debdbbd1f8b6136
+Elapsed time to handle libogg:x64-windows: 11.2 ms
+Installing 14/16 libvorbis:x64-windows@1.3.7#4...
+libvorbis:x64-windows@1.3.7#4 package ABI: 03beacbb4278324484b28f8bc4914092b18376d25c7aefa6c8b06c449f8ef4f5
+Elapsed time to handle libvorbis:x64-windows: 14.9 ms
+Installing 15/16 libflac[core,stack-protector]:x64-windows@1.5.0...
+libflac[core,stack-protector]:x64-windows@1.5.0 package ABI: 853b583b9281e9f345ac240d7086211562202261ca8a371393614fb82e1c38c4
+Elapsed time to handle libflac:x64-windows: 17.1 ms
+Installing 16/16 sfml[audio,core,graphics,network,window]:x64-windows@3.0.2...
+sfml[audio,core,graphics,network,window]:x64-windows@3.0.2 package ABI: 908fcabb60deedc0aea4f1c37b4d73e10ef94d12e2d35f4f1ec70258436b4dd3
+Elapsed time to handle sfml:x64-windows: 53.2 ms
+Installed contents are licensed to you by owners. Microsoft is not responsible for, nor does it grant any licenses to, third-party packages.
+Some packages did not declare an SPDX license. Check the `copyright` file for each package for more information about their licensing.
+Packages installed in this vcpkg installation declare the following licenses:
+(FTL OR GPL-2.0-or-later)
+(MIT OR CC-PDDC)
+(Unlicense OR MIT-0)
+Apache-2.0
+BSD-3-Clause
+MIT
+Zlib
+bzip2-1.0.6
+libpng-2.0
+The package sfml provides CMake targets:
+
+    find_package(SFML COMPONENTS Network Graphics Window Audio System CONFIG REQUIRED)
+    target_link_libraries(main PRIVATE SFML::Network SFML::Graphics SFML::Window SFML::Audio SFML::System)
+
+    # If you want SFML to provide an implementation of main():
+    target_link_libraries(main PRIVATE SFML::Main)
+
+All requested installations completed successfully in: 507 ms

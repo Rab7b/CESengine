@@ -29,21 +29,21 @@ namespace ces {
         return id;
     }
 
-void Registry::destroyEntity(ces::Entity entity) {
-    if (!this->isAlive(entity)) return;
+    void Registry::destroyEntity(ces::Entity entity) {
+        if (!this->isAlive(entity)) return;
 
-    this->aliveStatus.set(entity, false);
-    this->hasTransform.reset(id);
-    this->hasVelocity.reset(id);
-    this->hasVisual.reset(id);
+        this->aliveStatus.set(entity, false);
+        this->hasTransform.reset(entity); 
+        this->hasVelocity.reset(entity);
+        this->hasVisual.reset(entity);  
 
-    this->transforms[entity] = {};
-    this->velocities[entity] = {};
+        this->transforms[entity] = {};
+        this->velocities[entity] = {};
 
-    this->visuals[entity].shape.emplace<std::monostate>(); 
+        this->visuals[entity].it.emplace<std::monostate>();
 
-    this->freeIds.push_back(entity);
-}
+        this->freeIds.push_back(entity);
+    }
 
     bool Registry::isAlive(ces::Entity entity) const {
         return entity < maxEntities && this->aliveStatus.test(entity);
@@ -75,7 +75,6 @@ void Registry::destroyEntity(ces::Entity entity) {
         if (!this->hasVisual.test(entity)) throw std::runtime_error("No Visual Component!");
         return this->visuals[entity];
     }
-
 
     ces::Entity Registry::getEntitiesCount() const {
         return this->nextId;
