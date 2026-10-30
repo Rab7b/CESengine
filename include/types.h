@@ -3,7 +3,7 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 #include <SFML/Network.hpp>
-#include <memory>
+#include <variant>
 
 namespace ces {
 	using Entity = uint32_t;
@@ -19,7 +19,7 @@ namespace ces {
 	};
 
 	struct Visual {
-		std::unique_ptr<sf::Shape> it;
+    	std::variant<sf::CircleShape, sf::RectangleShape, sf::ConvexShape> it;
 	};
 
 	using Vector2f = sf::Vector2f;
