@@ -23,30 +23,28 @@ namespace ces {
         std::bitset<maxEntities> hasVisual;
 
     public:
-        inline Registry();
-        inline ~Registry() = default;
+        Registry();
+        ~Registry() = default;
 
-        inline ces::Entity createEntity();
-        inline void destroyEntity(ces::Entity entity);
-        inline bool isAlive(ces::Entity entity) const;
+        ces::Entity createEntity();
+        void destroyEntity(ces::Entity entity);
+        bool isAlive(ces::Entity entity) const;
 
-        inline void setTransform(ces::Entity entity, const ces::Position& t);
-        inline void setVelocity(ces::Entity entity, const ces::Velocity& v);
+        void setTransform(ces::Entity entity, const ces::Position& t);
+        void setVelocity(ces::Entity entity, const ces::Velocity& v);
 
         template<typename ShapeType, typename... Args>
-        inline void assignVisual(ces::Entity entity, Args&&... args) {
+        void assignVisual(ces::Entity entity, Args&&... args) {
             if (!this->isAlive(entity)) return;
 
             this->visuals[entity].it.emplace<ShapeType>(std::forward<Args>(args)...);
             this->hasVisual.set(entity, true);
         }
 
+        ces::Position& getPosition(ces::Entity entity);
+        ces::Velocity& getVelocity(ces::Entity entity);
+        ces::Visual& getVisual(ces::Entity entity);
 
-
-        inline ces::Position& getPosition(ces::Entity entity);
-        inline ces::Velocity& getVelocity(ces::Entity entity);
-        inline ces::Visual& getVisual(ces::Entity entity);
-
-        inline ces::Entity getEntitiesCount() const;
+        ces::Entity getEntitiesCount() const;
     };
 }
