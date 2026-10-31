@@ -76,7 +76,7 @@ Here is a minimal example demonstrating entity creation and component assignment
 #include "DrawSystem.h"
 
 int main() {
-    ces::Engine engine(800, 600, "CES Engine Sandbox");
+    ces::Engine& engine = ces::Engine::getInstance();
 
     // Register visual draw system pass
     engine.addSystem<ces::DrawSystem>(engine.getWindow());
