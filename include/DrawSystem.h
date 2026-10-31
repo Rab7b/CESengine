@@ -16,10 +16,12 @@ namespace ces {
         void runIt(ces::Entity& en) override {
 
             ces::Visual& vis = reg.getVisual(en);
-
+            ces::Position& pos= reg.getPosition(en);
+            
             std::visit([&](auto& shape) {
                 using T = std::decay_t<decltype(shape)>;
                 if constexpr (!std::is_same_v<T, std::monostate>) {
+                    shape.setPosition(ces::Vector2f(pos.x, pos.y));
                     window.draw(shape); 
                 }
             }, vis.it);
