@@ -1,9 +1,0 @@
-{
-  "name": "neonjumper",
-  "version-string": "0.1.0",
-  "dependencies": [
-    "sfml"
-  ],
-  "builtin-baseline": "6ade29bbd5a4c7e99439ec52adbc63c073953a57"
-}
-
