@@ -15,8 +15,8 @@ namespace ces {
 
         void runIt(ces::Entity& en) override {
 
-            ces::Visual& vis = reg.getVisual(en);
-            ces::Position& pos= reg.getPosition(en);
+            ces::Visual& vis = reg.get<ces::Visual>(en);
+            ces::Position& pos= reg.get<ces::Position>(en);
             
             std::visit([&](auto& shape) {
                 using T = std::decay_t<decltype(shape)>;
