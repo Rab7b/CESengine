@@ -1,6 +1,6 @@
 #pragma once
 #include "System.h"
-#include "Components.h"
+#include "types.h"
 #include <variant>
 
 namespace ces {
