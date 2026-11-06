@@ -11,7 +11,7 @@ namespace ces {
     public:
         MovementSystem(Registry& reg) : registry(reg) {}
 
-        void runIt(Entity entity) override {
+        void runIt(Entity& entity) override {
 
             if (!registry.has<ces::Position>(entity) || !registry.has<ces::Velocity>(entity)) {
                 return;
