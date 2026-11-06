@@ -1,7 +1,7 @@
 #pragma once
 #include "System.h"
 #include "Registry.h"
-#include "Components.h"
+#include "types.h"
 #include <SFML/Graphics.hpp>
 
 namespace ces {
