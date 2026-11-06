@@ -1,7 +1,7 @@
 #pragma once
 #include "System.h"
 #include "Registry.h"
-#include "Components.h"
+#include "types.h"
 
 namespace ces {
     class MovementSystem : public System {
@@ -13,12 +13,12 @@ namespace ces {
 
         void runIt(Entity entity) override {
 
-            if (!registry.has<Position>(entity) || !registry.has<Velocity>(entity)) {
+            if (!registry.has<ces::Position>(entity) || !registry.has<ces::Velocity>(entity)) {
                 return;
             }
 
-            auto& pos = registry.get<Position>(entity);
-            auto& vel = registry.get<Velocity>(entity);
+            auto& pos = registry.get<ces::Position>(entity);
+            auto& vel = registry.get<ces::Velocity>(entity);
 
             pos.x += vel.dx;
             pos.y += vel.dy;
