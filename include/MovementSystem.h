@@ -20,8 +20,8 @@ namespace ces {
             auto& pos = registry.get<ces::Position>(entity);
             auto& vel = registry.get<ces::Velocity>(entity);
 
-            pos.x += vel.dx;
-            pos.y += vel.dy;
+            pos.x += vel.vx;
+            pos.y += vel.vy;
         }
     };
 }
