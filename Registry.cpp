@@ -2,10 +2,6 @@
 
 namespace ces {
 
-    Registry::Registry() {
-        aliveStatus.reset();
-    }
-
     Entity Registry::createEntity() {
         Entity newId;
         if (!freeIds.empty()) {

@@ -1,30 +1,31 @@
 #pragma once
 #include "System.h"
-#include "types.h"
+#include "Registry.h"
+#include "Components.h"
 #include <SFML/Graphics.hpp>
-#include <variant>
-#include <type_traits>
 
 namespace ces {
-    class DrawSystem : public ces::System {
+    class DrawSystem : public System {
     private:
-        ces::RenderWindow& window;
+        Registry& registry;
+        sf::RenderWindow& window;
 
     public:
-        DrawSystem(ces::Registry& r, ces::RenderWindow& win) : ces::System(r), window(win) {}
 
-        void runIt(ces::Entity& en) override {
+        DrawSystem(Registry& reg, sf::RenderWindow& win) : registry(reg), window(win) {}
 
-            ces::Visual& vis = reg.get<ces::Visual>(en);
-            ces::Position& pos= reg.get<ces::Position>(en);
-            
-            std::visit([&](auto& shape) {
-                using T = std::decay_t<decltype(shape)>;
-                if constexpr (!std::is_same_v<T, std::monostate>) {
-                    shape.setPosition(ces::Vector2f(pos.x, pos.y));
-                    window.draw(shape); 
-                }
-            }, vis.it);
+        void runIt(Entity entity) override {
+            if (!registry.has<Position>(entity)) {
+                return;
+            }
+
+            auto& pos = registry.get<Position>(entity);
+
+            if (registry.has<ces::Visual>(entity)) {
+                auto& spriteComp = registry.get<ces::Visual>(entity);
+                spriteComp.it.setPosition({ pos.x, pos.y });
+                window.draw(spriteComp.it);
+            }
         }
     };
 }
