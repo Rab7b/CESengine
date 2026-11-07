@@ -2,7 +2,7 @@
 #include "System.h"
 #include "Registry.h"
 #include "types.h"
-#include <SFML/Graphics.h>
+#include <SFML/Graphics.hpp>
 #include <variant>
 
 namespace ces {
