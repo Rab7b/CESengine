@@ -1,24 +1,23 @@
 #pragma once
-#include "DrawSystem.h"
-#include "System.h"
-#include "MovementSystem.h"
-#include "Registry.h"
 #include <vector>
 #include <memory>
 #include <optional>
 #include <string>
+#include <SFML/Graphics.hpp>
+#include "Registry.h"
+#include "System.h"
 
 extern "C" {
     __declspec(dllexport) unsigned long NvOptimusEnablement = 0x00000001;     // NVIDIA
-    __declspec(dllexport) int AmdPowerXpressRequestHighPerformance = 1;       // AMD / ATI
+    __declspec(dllexport) int AmdPowerXpressRequestHighPerformance = 1;        // AMD / ATI
 }
 
 namespace ces {
     class Engine {
     private:
-        ces::Registry registry;
+        Registry registry;
         sf::RenderWindow window;
-        std::vector<std::unique_ptr<ces::System>> systems;
+        std::vector<std::unique_ptr<System>> systems;
 
         inline void update() {
             window.clear();
@@ -30,7 +29,6 @@ namespace ces {
             window.display();
         }
 
-
         inline Engine(unsigned int width, unsigned int height, const std::string& title, bool vSync = true, unsigned int frameRateLimit = 60)
             : window(sf::VideoMode({ width, height }), title) {
             window.setVerticalSyncEnabled(vSync);
@@ -40,13 +38,13 @@ namespace ces {
         }
 
     public:
-        inline Engine(const ces::Engine&) = delete;
-        inline Engine& operator=(const ces::Engine&) = delete;
-        inline Engine(ces::Engine&&) = delete;
-        inline Engine& operator=(ces::Engine&&) = delete;
+        inline Engine(const Engine&) = delete;
+        inline Engine& operator=(const Engine&) = delete;
+        inline Engine(Engine&&) = delete;
+        inline Engine& operator=(Engine&&) = delete;
 
-        inline static ces::Engine& getInstance(unsigned int width = 1280, unsigned int height = 720, const std::string& title = "CES Engine", bool vSync = true, unsigned int frameRateLimit = 60) {
-            static ces::Engine instance(width, height, title, vSync, frameRateLimit);
+        inline static Engine& getInstance(unsigned int width = 1280, unsigned int height = 720, const std::string& title = "CES Engine", bool vSync = true, unsigned int frameRateLimit = 60) {
+            static Engine instance(width, height, title, vSync, frameRateLimit);
             return instance;
         }
 
