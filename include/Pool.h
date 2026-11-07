@@ -15,7 +15,7 @@ namespace ces {
     class ComponentPool : public IComponentPool {
     private:
         std::vector<T> data;
-        std::vector<bool> occupied;
+        std::vector<uint8_t> occupied;
 
     public:
         template<typename... Args>
