@@ -1,24 +1,19 @@
 #pragma once
 #include "System.h"
-#include "Registry.h"
 #include "types.h"
 
 namespace ces {
     class MovementSystem : public System {
-    private:
-        Registry& registry;
-
     public:
-        MovementSystem(Registry& reg) : registry(reg) {}
+        MovementSystem(Registry& reg) : System(reg) {}
 
-        void runIt(Entity& entity) override {
-
-            if (!registry.has<ces::Position>(entity) || !registry.has<ces::Velocity>(entity)) {
+        void runIt(Entity& en) override {
+            if (!reg.has<Position>(en) || !reg.has<Velocity>(en)) {
                 return;
             }
 
-            auto& pos = registry.get<ces::Position>(entity);
-            auto& vel = registry.get<ces::Velocity>(entity);
+            auto& pos = reg.get<Position>(en);
+            auto& vel = reg.get<Velocity>(en);
 
             pos.x += vel.vx;
             pos.y += vel.vy;
