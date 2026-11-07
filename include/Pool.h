@@ -22,10 +22,10 @@ namespace ces {
         T& emplace(Entity entity, Args&&... args) {
             if (entity >= data.size()) {
                 data.resize(entity + 1);
-                occupied.resize(entity + 1, false);
+                occupied.resize(entity + 1, 0);
             }
             data[entity] = T{ std::forward<Args>(args)... };
-            occupied[entity] = true;
+            occupied[entity] = 1;
             return data[entity];
         }
 
@@ -38,12 +38,12 @@ namespace ces {
         }
 
         bool has(Entity entity) const override {
-            return entity < occupied.size() && occupied[entity];
+            return entity < occupied.size() && occupied[entity] == 1;
         }
 
         void remove(Entity entity) override {
             if (entity < occupied.size()) {
-                occupied[entity] = false;
+                occupied[entity] = 0;
             }
         }
     };
