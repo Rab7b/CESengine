@@ -7,7 +7,7 @@
 
 namespace ces {
 	using Entity = uint32_t;
-	inline int maxEntities = 1000;
+	int maxEntities = 1000;
 	inline constexpr Entity invalidEntity = 0xFFFFFFFF;
 
 	struct Position {
