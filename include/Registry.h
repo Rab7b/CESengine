@@ -17,7 +17,7 @@ namespace ces {
         ces::Entity nextId = 0;
 
         std::vector<ces::Entity> freeIds;
-        std::vector<ces::Entity> activeEntities
+        std::vector<ces::Entity> activeEntities;
 
         std::unordered_map<std::type_index, std::unique_ptr<IComponentPool>> pools;
 
