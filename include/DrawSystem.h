@@ -16,7 +16,7 @@ namespace ces {
         DrawSystem(Registry& reg, sf::RenderWindow& win)
             : System(reg), registryRef(reg), window(win) {}
 
-        void runIt(Entity entity) {
+        void runIt(Entity& entity) {
             if (entity == 0) {
                 drawnThisFrame = false;
             }
