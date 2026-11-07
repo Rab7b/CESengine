@@ -15,7 +15,9 @@ namespace ces {
     private:
         std::bitset<maxEntities> aliveStatus;
         ces::Entity nextId = 0;
+
         std::vector<ces::Entity> freeIds;
+        std::vector<ces::Entity> activeEntities
 
         std::unordered_map<std::type_index, std::unique_ptr<IComponentPool>> pools;
 
@@ -39,6 +41,10 @@ namespace ces {
         ces::Entity createEntity();
         void destroyEntity(ces::Entity entity);
         bool isAlive(ces::Entity entity) const;
+
+        const std::vector<ces::Entity>& getActiveEntities() const {
+            return activeEntities;
+        }
 
         template<typename T, typename... Args>
         T& assign(ces::Entity entity, Args&&... args) {
