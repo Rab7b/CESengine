@@ -11,7 +11,7 @@ A lightning-fast, lightweight 2D sandbox game powered by a custom **Entity Compo
 
 ---
 
-## ✨ Key Features
+## ✨ Key Features 
 
 - **Custom ECS Architecture:** Built around a type-erased registry (`registry.has<T>()`, `registry.get<T>()`) eliminating heavy external framework bloat.
 - **Modular System Pipeline:** Decoupled logic handlers for keyboard input, physics/movement, and multi-shape rendering (`sf::CircleShape`, `sf::RectangleShape`).
