@@ -57,7 +57,7 @@ namespace ces {
             this->systems.push_back(std::make_unique<T>(this->registry, std::forward<Args>(args)...));
         }
 
-        inline setMaxEntities(int newCount){
+        inline void setMaxEntities(int newCount){
             maxEntities = newCount;
         }
 
