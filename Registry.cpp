@@ -30,10 +30,12 @@ namespace ces {
         aliveStatus.set(entity, false);
         freeIds.push_back(entity);
 
-        activeEntities.erase(
-            std::remove(activeEntities.begin(), activeEntities.end(), entity), 
-            activeEntities.end()
-        );
+        auto it = std::find(activeEntities.begin(), activeEntities.end(), entity);
+        if (it != activeEntities.end()) {
+            *it = activeEntities.back(); 
+            activeEntities.pop_back(); 
+        }
+
     }
 
 
