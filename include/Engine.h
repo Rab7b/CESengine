@@ -1,4 +1,6 @@
 #pragma once
+#pragma optimize("", on)
+
 #include <vector>
 #include <memory>
 #include <optional>
