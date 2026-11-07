@@ -57,10 +57,6 @@ namespace ces {
             this->systems.push_back(std::make_unique<T>(this->registry, std::forward<Args>(args)...));
         }
 
-        inline void setMaxEntities(int newCount){
-            maxEntities = newCount;
-        }
-
         inline void run() {
             while (const std::optional event = this->getWindow().pollEvent()) {
                 if (event->is<sf::Event::Closed>()) {
