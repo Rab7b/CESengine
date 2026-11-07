@@ -23,7 +23,7 @@ namespace ces {
             window.clear();
 
             for (const auto& system : this->systems) {
-                system->update();
+                system->runIt();
             }
 
             window.display();
