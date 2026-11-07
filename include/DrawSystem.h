@@ -8,30 +8,31 @@
 namespace ces {
     class DrawSystem : public System {
     private:
+        Registry& registryRef;
         sf::RenderWindow& window;
         mutable bool drawnThisFrame = false;
 
     public:
         DrawSystem(Registry& reg, sf::RenderWindow& win)
-            : System(reg), window(win) {}
+            : System(reg), registryRef(reg), window(win) {}
 
-        void runIt(Entity entity) override {
+        void runIt(Entity entity) {
             if (entity == 0) {
                 drawnThisFrame = false;
             }
 
             if (drawnThisFrame) return;
 
-            std::size_t count = registry.getEntitiesCount();
+            std::size_t count = registryRef.getEntitiesCount();
             sf::VertexArray vertices(sf::PrimitiveType::Points);
             vertices.resize(count);
 
             std::size_t index = 0;
             for (Entity i = 0; i < count; ++i) {
-                if (!registry.isAlive(i)) continue;
-                if (registry.has<Position>(i) && registry.has<Visual>(i)) {
-                    const auto& pos = registry.get<Position>(i);
-                    const auto& vis = registry.get<Visual>(i);
+                if (!registryRef.isAlive(i)) continue;
+                if (registryRef.has<Position>(i) && registryRef.has<Visual>(i)) {
+                    const auto& pos = registryRef.get<Position>(i);
+                    const auto& vis = registryRef.get<Visual>(i);
 
                     sf::Color color = sf::Color::White;
                     std::visit([&](auto& shape) {
