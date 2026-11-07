@@ -23,15 +23,13 @@ namespace ces {
         inline void update() {
             window.clear();
 
-            for (ces::Entity i = 0; i < this->registry.getEntitiesCount() * 2; ++i) {
-                if (!this->registry.isAlive(i)) continue;
-                for (const auto& system : this->systems) {
-                    system->runIt(i);
-                }
+            for (const auto& system : this->systems) {
+                system->update();
             }
 
             window.display();
         }
+
 
         inline Engine(unsigned int width, unsigned int height, const std::string& title, bool vSync = true, unsigned int frameRateLimit = 60)
             : window(sf::VideoMode({ width, height }), title) {

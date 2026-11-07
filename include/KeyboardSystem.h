@@ -11,9 +11,8 @@ namespace ces {
     public:
         using ces::System::System;
 
-        void runIt(ces::Entity& en) override {
+        void runIt() override {
             pressedKeys.clear();
-
             for (int i = 0; i < static_cast<int>(ces::Keyboard::KeyCount); ++i) {
                 ces::Keyboard::Key currentKey = static_cast<ces::Keyboard::Key>(i);
                 if (ces::Keyboard::isKeyPressed(currentKey)) {
@@ -21,6 +20,7 @@ namespace ces {
                 }
             }
         }
+
 
         bool isKeyPressed(ces::Keyboard::Key key) const {
             return pressedKeys.find(key) != pressedKeys.end();

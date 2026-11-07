@@ -12,6 +12,6 @@ namespace ces {
 
         inline virtual ~System() = default;
 
-        inline virtual void runIt(ces::Entity& en) = 0;
+        inline virtual void runIt() = 0;
     };
 };

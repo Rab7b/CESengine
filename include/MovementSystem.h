@@ -11,17 +11,18 @@ namespace ces {
     public:
         MovementSystem(Registry& reg) : registry(reg) {}
 
-        void runIt(Entity entity) override {
-
-            if (!registry.has<ces::Position>(entity) || !registry.has<ces::Velocity>(entity)) {
-                return;
+        void runIt() override {
+            ces::Entity count = reg.getEntitiesCount();
+            for (ces::Entity i = 0; i < count; ++i) {
+                if (!reg.isAlive(i)) continue;
+                if (reg.has<Position>(i) && reg.has<Velocity>(i)) {
+                    auto& pos = reg.get<Position>(i);
+                    auto& vel = reg.get<Velocity>(i);
+                    pos.x += vel.vx;
+                    pos.y += vel.vy;
+                }
             }
-
-            auto& pos = registry.get<ces::Position>(entity);
-            auto& vel = registry.get<ces::Velocity>(entity);
-
-            pos.x += vel.vx;
-            pos.y += vel.vy;
         }
+
     };
 }
