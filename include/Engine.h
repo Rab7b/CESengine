@@ -4,7 +4,6 @@
 #include <optional>
 #include <string>
 #include <SFML/Graphics.hpp>
-#include <SFML/Window/GpuPreference.hpp>
 #include "Registry.h"
 #include "System.h"
 
