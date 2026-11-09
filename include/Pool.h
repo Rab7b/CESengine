@@ -1,50 +1,83 @@
 #pragma once
 #include <vector>
+#include <cassert>
+#include <utility>
+#include <algorithm>
 #include "types.h"
 
 namespace ces {
 
+    constexpr size_t TOMBSTONE = static_cast<size_t>(-1);
+
     class IComponentPool {
     public:
         virtual ~IComponentPool() = default;
-        virtual inline void remove(Entity entity) = 0;
-        virtual inline bool has(Entity entity) const = 0;
+        virtual void remove(Entity entity) = 0;
+        virtual bool has(Entity entity) const = 0;
     };
 
     template<typename T>
     class ComponentPool : public IComponentPool {
     private:
-        std::vector<T> data;
-        std::vector<uint8_t> occupied;
+        std::vector<T> data;             
+        std::vector<Entity> dense;       
+        std::vector<size_t> sparse;      
 
     public:
         template<typename... Args>
         T& emplace(Entity entity, Args&&... args) {
-            if (entity >= data.size()) {
-                data.resize(entity + 1);
-                occupied.resize(entity + 1, 0);
+            if (entity >= sparse.size()) {
+                sparse.resize(entity + 1, TOMBSTONE);
             }
-            data[entity] = T{ std::forward<Args>(args)... };
-            occupied[entity] = 1;
-            return data[entity];
+
+            size_t idx = sparse[entity];
+
+            if (idx != TOMBSTONE && idx (args)... };
+                return data[idx];
+            }
+
+            sparse[entity] = dense.size();
+            dense.push_back(entity);
+            data.emplace_back(std::forward<Args>(args)...);
+
+            return data.back();
         }
 
         T& get(Entity entity) {
-            return data[entity];
+            return data[sparse[entity]];
         }
 
         const T& get(Entity entity) const {
-            return data[entity];
+            return data[sparse[entity]];
         }
 
         bool has(Entity entity) const override {
-            return entity < occupied.size() && occupied[entity] == 1;
+            if (entity >= sparse.size()) return false;
+            size_t idx = sparse[entity];
+            return idx != TOMBSTONE && idx < dense.size() && dense[idx] == entity;
         }
 
         void remove(Entity entity) override {
-            if (entity < occupied.size()) {
-                occupied[entity] = 0;
+            if (!has(entity)) return;
+
+            size_t idx_to_remove = sparse[entity];
+            size_t last_idx = dense.size() - 1;
+            Entity last_entity = dense[last_idx];
+
+            if (idx_to_remove != last_idx) {
+                data[idx_to_remove] = std::move(data[last_idx]);
+                dense[idx_to_remove] = last_entity;
+                sparse[last_entity] = idx_to_remove; 
             }
+
+            sparse[entity] = TOMBSTONE;
+
+            data.pop_back();
+            dense.pop_back();
         }
+
+        size_t size() const { return dense.size(); }
+        auto begin() { return data.begin(); }
+        auto end() { return data.end(); }
     };
 }
