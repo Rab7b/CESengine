@@ -11,20 +11,12 @@ namespace ces {
     private:
         sf::RenderWindow& window;
         std::vector<sf::Vertex> vertexBuffer;
-        mutable bool drawnThisFrame = false;
 
     public:
-
         DrawSystem(Registry& reg, sf::RenderWindow& win)
             : System(reg), window(win) {}
 
-        void runIt(ces::Entity& entity) override {
-            if (entity == 0) {
-                drawnThisFrame = false;
-            }
-
-            if (drawnThisFrame) return;
-
+        void runIt() override {
             std::size_t count = reg.getEntitiesCount();
 
             if (vertexBuffer.size() < count) {
@@ -34,7 +26,7 @@ namespace ces {
             std::size_t index = 0;
             for (Entity i = 0; i < count; ++i) {
                 if (!reg.isAlive(i)) continue;
-
+                
                 if (reg.has<Position>(i) && reg.has<Visual>(i)) {
                     const auto& pos = reg.get<Position>(i);
                     const auto& vis = reg.get<Visual>(i);
@@ -56,8 +48,6 @@ namespace ces {
             if (index > 0) {
                 window.draw(vertexBuffer.data(), index, sf::PrimitiveType::Points);
             }
-
-            drawnThisFrame = true;
         }
     };
 }
