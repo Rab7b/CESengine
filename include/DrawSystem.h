@@ -3,44 +3,46 @@
 #include "Registry.h"
 #include "types.h"
 #include <SFML/Graphics.hpp>
+#include <variant>
 #include <vector>
 
 namespace ces {
     class DrawSystem : public System {
     private:
-        Registry& registryRef;
         sf::RenderWindow& window;
-
-        sf::VertexBuffer gpuBuffer;
         std::vector<sf::Vertex> vertexBuffer;
+        mutable bool drawnThisFrame = false;
 
     public:
+
         DrawSystem(Registry& reg, sf::RenderWindow& win)
-            : System(reg), registryRef(reg), window(win) {
+            : System(reg), window(win) {}
 
-            gpuBuffer.create(maxEntities);
-            gpuBuffer.setPrimitiveType(sf::PrimitiveType::Points);
-            gpuBuffer.setUsage(sf::VertexBuffer::Usage::Stream);
-        }
+        void runIt(ces::Entity& entity) override {
+            // Reset the flag on the first entity of the frame loop
+            if (entity == 0) {
+                drawnThisFrame = false;
+            }
 
-        void runIt() override {
-
-            auto& posPool = reg.getPool<Position>();
-            auto& visPool = reg.getPool<Visual>();
+            if (drawnThisFrame) return;
 
             std::size_t count = reg.getEntitiesCount();
+
             if (vertexBuffer.size() < count) {
                 vertexBuffer.resize(count);
             }
 
             std::size_t index = 0;
+            for (Entity i = 0; i < count; ++i) {
+                if (!reg.isAlive(i)) continue;
 
-            for (Entity i : reg.getActiveEntities()) {
-                if (posPool.has(i) && visPool.has(i)) {
-                    const auto& pos = posPool.get(i);
-                    const auto& vis = visPool.get(i);
+                if (reg.has<Position>(i) && reg.has<Visual>(i)) {
+                    const auto& pos = reg.get<Position>(i);
+                    const auto& vis = reg.get<Visual>(i);
 
                     sf::Color color = sf::Color::White;
+
+                    // Blazing fast direct type check instead of std::visit
                     if (auto* circle = std::get_if<sf::CircleShape>(&vis.it)) {
                         color = circle->getFillColor();
                     } else if (auto* rect = std::get_if<sf::RectangleShape>(&vis.it)) {
@@ -54,11 +56,10 @@ namespace ces {
             }
 
             if (index > 0) {
-                gpuBuffer.update(vertexBuffer.data(), index, 0);
-                window.draw(gpuBuffer); 
+                window.draw(vertexBuffer.data(), index, sf::PrimitiveType::Points);
             }
-        }
 
-        void runIt(Entity& en) override {}
+            drawnThisFrame = true;
+        }
     };
 }
