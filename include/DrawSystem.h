@@ -19,7 +19,6 @@ namespace ces {
             : System(reg), window(win) {}
 
         void runIt(ces::Entity& entity) override {
-            // Reset the flag on the first entity of the frame loop
             if (entity == 0) {
                 drawnThisFrame = false;
             }
@@ -42,7 +41,6 @@ namespace ces {
 
                     sf::Color color = sf::Color::White;
 
-                    // Blazing fast direct type check instead of std::visit
                     if (auto* circle = std::get_if<sf::CircleShape>(&vis.it)) {
                         color = circle->getFillColor();
                     } else if (auto* rect = std::get_if<sf::RectangleShape>(&vis.it)) {
