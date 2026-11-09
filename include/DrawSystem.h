@@ -3,7 +3,6 @@
 #include "Registry.h"
 #include "types.h"
 #include <SFML/Graphics.hpp>
-#include <variant>
 #include <vector>
 
 namespace ces {
@@ -12,29 +11,36 @@ namespace ces {
         Registry& registryRef;
         sf::RenderWindow& window;
 
+        sf::VertexBuffer gpuBuffer;
         std::vector<sf::Vertex> vertexBuffer;
 
     public:
         DrawSystem(Registry& reg, sf::RenderWindow& win)
-            : System(reg), registryRef(reg), window(win) {}
+            : System(reg), registryRef(reg), window(win) {
+
+            gpuBuffer.create(maxEntities);
+            gpuBuffer.setPrimitiveType(sf::PrimitiveType::Points);
+            gpuBuffer.setUsage(sf::VertexBuffer::Usage::Stream);
+        }
 
         void runIt() override {
-            std::size_t count = reg.getEntitiesCount();
 
+            auto& posPool = reg.getPool<Position>();
+            auto& visPool = reg.getPool<Visual>();
+
+            std::size_t count = reg.getEntitiesCount();
             if (vertexBuffer.size() < count) {
                 vertexBuffer.resize(count);
             }
 
             std::size_t index = 0;
-            for (Entity i = 0; i < count; ++i) {
-                if (!reg.isAlive(i)) continue;
-                
-                if (reg.has<Position>(i) && reg.has<Visual>(i)) {
-                    const auto& pos = reg.get<Position>(i);
-                    const auto& vis = reg.get<Visual>(i);
+
+            for (Entity i : reg.getActiveEntities()) {
+                if (posPool.has(i) && visPool.has(i)) {
+                    const auto& pos = posPool.get(i);
+                    const auto& vis = visPool.get(i);
 
                     sf::Color color = sf::Color::White;
-
                     if (auto* circle = std::get_if<sf::CircleShape>(&vis.it)) {
                         color = circle->getFillColor();
                     } else if (auto* rect = std::get_if<sf::RectangleShape>(&vis.it)) {
@@ -48,8 +54,11 @@ namespace ces {
             }
 
             if (index > 0) {
-                window.draw(vertexBuffer.data(), index, sf::PrimitiveType::Points);
+                gpuBuffer.update(vertexBuffer.data(), index, 0);
+                window.draw(gpuBuffer); 
             }
         }
+
+        void runIt(Entity& en) override {}
     };
 }
