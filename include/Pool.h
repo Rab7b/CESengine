@@ -7,8 +7,8 @@ namespace ces {
     class IComponentPool {
     public:
         virtual ~IComponentPool() = default;
-        virtual void remove(Entity entity) = 0;
-        virtual bool has(Entity entity) const = 0;
+        virtual inline void remove(Entity entity) = 0;
+        virtual inline bool has(Entity entity) const = 0;
     };
 
     template<typename T>
