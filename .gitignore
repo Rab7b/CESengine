@@ -1,0 +1,17 @@
+# Visual Studio / MSBuild
+.vs/
+x64/
+Debug/
+Release/
+*.db
+*.opensdf
+*.sdf
+*.suo
+*.user
+*.vcxproj.user
+
+# Compiled binaries
+*.exe
+*.dll
+*.obj
+*.lib
