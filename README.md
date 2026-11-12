@@ -2,7 +2,7 @@
 
 A lightning-fast, header-only C++20 Entity Component System (ECS) engine built from scratch. Designed for extreme performance, it handles **1,000,000+ entities at 150+ FPS** using contiguous component memory pools and batched hardware rendering via SFML.
 
-Included in the repo is a showcase "Black Hole" simulation featuring 500,000+ swirling particles with gravitational physics, dynamic velocity damping, and a gorgeous yellow-pink-blue color gradient mapped to particle distance and angle.
+Included in the repository is a showcase of a starter code and linking instruction!
 
 ---
 
@@ -15,7 +15,7 @@ Included in the repo is a showcase "Black Hole" simulation featuring 500,000+ sw
 
 ---
 
-## 🚀 Quick Look: The Black Hole Demo
+## 🚀 Quick Look: The Starter Code
 
 Here is a sneak peek of how clean it is to set up a massive simulation using the engine's registry and systems:
 
