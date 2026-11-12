@@ -17,7 +17,7 @@ Included in the repository is a showcase of a starter code and linking instructi
 
 ## 🚀 Quick Look: The Starter Code
 
-Here is a sneak peek of how clean it is to set up a massive simulation using the engine's registry and systems:
+Here is a sneak peek of how clean it is to set up a main loop using the engine's registry and systems:
 
 ```cpp
 #include "Engine/Engine.h"
