@@ -142,22 +142,24 @@
     </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Engine\Engine.cpp" />
-    <ClCompile Include="MovementSystem.hpp" />
+    <ClCompile Include="include\Engine\Engine.cpp" />
+    <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="vcpkg.json" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ComponentPool.hpp" />
-    <ClInclude Include="DrawSystem.hpp" />
-    <ClInclude Include="Engine\Engine.h" />
-    <ClInclude Include="Registry.hpp" />
-    <ClInclude Include="types.h" />
+    <Text Include=".gitignore" />
+    <Text Include="include\ces.h" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include=".gitignore" />
-    <Text Include="Systems\System.h" />
+    <ClInclude Include="include\Engine\Engine.h" />
+    <ClInclude Include="include\Managers\ComponentPool.hpp" />
+    <ClInclude Include="include\Managers\Registry.hpp" />
+    <ClInclude Include="include\Systems\include\DrawSystem.hpp" />
+    <ClInclude Include="include\Systems\include\MovementSystem.hpp" />
+    <ClInclude Include="include\Systems\System.h" />
+    <ClInclude Include="include\Types\types.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -15,3 +15,11 @@ Release/
 *.dll
 *.obj
 *.lib
+
+# Ignore build directories
+build/
+out/
+.vs/
+
+# Ignore the local sandbox entry point
+main.cpp

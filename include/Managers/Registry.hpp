@@ -1,7 +1,7 @@
 #pragma once
 #include <tuple>
 #include <vector>
-#include "ComponentPool.hpp"
+#include "../Managers/ComponentPool.hpp"
 
 namespace ces {
     template <typename... Components>

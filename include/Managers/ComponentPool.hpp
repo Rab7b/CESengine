@@ -1,6 +1,6 @@
 #pragma once
 #include <vector>
-#include "types.h"
+#include "../Types/types.h"
 
 namespace ces {
 
@@ -12,15 +12,15 @@ namespace ces {
         ComponentPool() : data(maxEntities) {}
 
         inline T& get(const Entity& entity) {
-            return data[entity.id];
+            return this->data[entity.id];
         }
 
         inline void add(const Entity& entity, const T& component) {
-            data[entity.id] = component;
+            this->data[entity.id] = component;
         }
 
         inline void destroy(const Entity& entity) {
-            data[entity.id] = T{};
+            this->data[entity.id] = T{};
         }
     };
 

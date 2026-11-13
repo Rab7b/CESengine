@@ -3,7 +3,7 @@
 #include <memory>
 #include <SFML/Graphics.hpp>
 #include "../Systems/System.h" 
-#include "../Registry.hpp"
+#include "../Managers/Registry.hpp"
 
 namespace ces {
 
@@ -12,8 +12,10 @@ namespace ces {
     class Engine {
     private:
 
-        ces::Clock fpsClock;
-        float currentFps = 0.0f;
+        sf::Clock m_clock;
+        sf::Time m_accumulatedTime = sf::Time::Zero;
+        int m_frameCount = 0;
+        float m_currentFps = 0.0f;
 
         ces::Registry<ces::Transform, ces::Velocity> r;
 
@@ -47,6 +49,10 @@ namespace ces {
         inline auto& getRegistry() {
             return this->r;
         }
+
+		int getFPS() const {
+			return static_cast<int>(this->m_currentFps);
+		}
 
         void run();
     };

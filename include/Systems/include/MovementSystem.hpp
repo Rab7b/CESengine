@@ -1,8 +1,8 @@
 #pragma once
-#include "Engine/Engine.h"
-#include "Systems/System.h"
-#include "types.h"
-#include "Registry.hpp"
+#include "../Engine/Engine.h"
+#include "../Systems/System.h"
+#include "../Types/types.h"
+#include "../Managers/Registry.hpp"
 
 namespace ces {
     class MovementSystem : public System {
@@ -10,7 +10,7 @@ namespace ces {
         using System::System;
 
         void update() override {
-            auto& registry = engine.getRegistry();
+            auto& registry = this->engine.getRegistry();
             auto& transformPool = registry.getPool<Transform>();
             auto& velocityPool = registry.getPool<Velocity>();
 
