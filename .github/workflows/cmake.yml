@@ -14,7 +14,7 @@ jobs:
       fail-fast: false
       matrix:
         config:
-          - { name: "Windows (MSVC 2022)", os: windows-latest, generator: "Visual Studio 17 2022" }
+          - { name: "Windows (MSVC)", os: windows-latest, generator: "Ninja" }
           - { name: "Linux (GCC)", os: ubuntu-latest, generator: "Ninja" }
           - { name: "macOS (Clang)", os: macos-latest, generator: "Ninja" }
 
@@ -22,25 +22,17 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Install Linux Dependencies (SFML & Ninja)
-        if: runner.os == 'Linux'
+      - name: Install Ninja (Linux & macOS)
+        if: runner.os != 'Windows'
         run: |
-          sudo apt-get update
-          sudo apt-get install -y ninja-build libsfml-dev libxrandr-dev libxcursor-dev libudev-dev libopenal-dev libflac-dev libvorbis-dev libgl1-mesa-dev libfreetype-dev
-
-      - name: Install macOS Dependencies (SFML & Ninja)
-        if: runner.os == 'macOS'
-        run: brew install ninja sfml
-
-      - name: Install Windows Dependencies (vcpkg SFML)
-        if: runner.os == 'Windows'
-        run: |
-          vcpkg install sfml:x64-windows
+          if [ "${{ runner.os }}" == "Linux" ]; then
+            sudo apt-get update && sudo apt-get install -y ninja-build
+          elif [ "${{ runner.os }}" == "macOS" ]; then
+            brew install ninja
+          fi
 
       - name: Configure CMake
-        run: |
-          cmake -B ${{github.workspace}}/build -G "${{ matrix.config.generator }}" -DCMAKE_BUILD_TYPE=Release ${{ runner.os == 'Windows' && '-DCMAKE_TOOLCHAIN_FILE=C:/vcpkg/scripts/buildsystems/vcpkg.cmake' || '' }}
+        run: cmake -S ${{github.workspace}} -B ${{github.workspace}}/build -G "${{ matrix.config.generator }}" -DCMAKE_BUILD_TYPE=Release
 
       - name: Build
         run: cmake --build ${{github.workspace}}/build --config Release --parallel
-        
