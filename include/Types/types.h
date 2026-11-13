@@ -7,7 +7,7 @@ namespace ces {
 
 	using namespace sf;
 
-	constexpr std::uint32_t maxEntities{ 1'000'000 };
+	constexpr std::uint32_t maxEntities{ 1'500'000 };
 
 	struct Entity {
 		std::uint32_t id{};
