@@ -45,7 +45,7 @@
 
 <br />
 
-## 🚀 Quick Look: The Black Hole Demo
+## 🚀 Quick Look: The Main Loop
 
 Here is a sneak peek of how clean it is to set up a massive simulation using the engine's registry and systems:
 
