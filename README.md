@@ -11,7 +11,7 @@
 </p>
 
 <blockquote>
-  Designed for extreme performance, handling <b>1,000,000+ entities at 150+ FPS</b> using contiguous component memory pools and batched hardware rendering via SFML.
+  Designed for extreme performance, handling <b>1,000,000+ entities at 120+ FPS</b> using contiguous component memory pools and batched hardware rendering via SFML.
 </blockquote>
 
 </div>
@@ -28,7 +28,7 @@
     </td>
     <td width="50%" valign="top">
       <h3>⚡ Batch Rendering</h3>
-      Bypasses heavy draw calls by leveraging <code>sf::VertexArray</code> for single-draw rendering of massive particle counts.
+      Bypasses heavy draw calls by leveraging <code>ces::VertexBuffer</code> for single-draw rendering of massive particle counts.
     </td>
   </tr>
   <tr>
@@ -124,8 +124,8 @@ Running on consumer hardware, the engine achieves buttery-smooth frame rates by 
 | Metric | Benchmark | Architecture Advantage |
 | :--- | :---: | :--- |
 | **Entity Count** | `1,000,000+` | Contiguous memory pool allocation |
-| **Framerate** | `150+ FPS` | Single-threaded update & batch draw |
-| **GPU Load** | `~5%` | Optimized CPU-side `sf::VertexArray` |
+| **Framerate** | `120+ FPS` | Single-threaded update & batch draw |
+| **GPU Load** | `~5%` | Optimized CPU-side `ces::VertexBuffer` |
 
 </div>
 
