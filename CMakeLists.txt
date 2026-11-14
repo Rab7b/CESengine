@@ -17,7 +17,7 @@ target_include_directories(ces_engine INTERFACE
     $<INSTALL_INTERFACE:include>
 )
 
-option(CES_BUILD_EXAMPLES "Build engine examples" ON)
+option(CES_BUILD_EXAMPLES "Build engine examples" OFF)
 if(CES_BUILD_EXAMPLES AND PROJECT_IS_TOP_LEVEL)
     add_executable(test1 examples/test1.cpp)
     target_link_libraries(test1 PRIVATE ces_engine)
