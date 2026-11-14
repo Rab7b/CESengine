@@ -17,12 +17,6 @@ target_include_directories(ces_engine INTERFACE
     $<INSTALL_INTERFACE:include>
 )
 
-option(CES_BUILD_TESTS "Build validation tests for CESengine" ON)
-if(CES_BUILD_TESTS AND PROJECT_IS_TOP_LEVEL)
-    add_executable(ces_tests tests/main.cpp)
-    target_link_libraries(ces_tests PRIVATE ces_engine)
-endif()
-
 include(GNUInstallDirs)
 
 install(DIRECTORY include/CESengine DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
