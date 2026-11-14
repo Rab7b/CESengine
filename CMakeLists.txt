@@ -17,22 +17,16 @@ target_include_directories(ces_engine INTERFACE
     $<INSTALL_INTERFACE:include>
 )
 
-option(CES_BUILD_TESTS "Build validation tests for CESengine" ON)
-if(CES_BUILD_TESTS AND PROJECT_IS_TOP_LEVEL)
-    add_executable(ces_tests examples/test1.cpp)
-    target_link_libraries(ces_tests PRIVATE ces_engine)
+option(CES_BUILD_EXAMPLES "Build engine examples" ON)
+if(CES_BUILD_EXAMPLES AND PROJECT_IS_TOP_LEVEL)
+    add_executable(test1 examples/test1.cpp)
+    target_link_libraries(test1 PRIVATE ces_engine)
+
+    find_package(SFML QUIET COMPONENTS graphics window system)
+    if(SFML_FOUND)
+        target_link_libraries(test1 PRIVATE sfml-graphics sfml-window sfml-system)
+        message(STATUS "SFML found! Linked to test1.")
+    else()
+        message(WARNING "SFML not found on this system. Make sure SFML is installed if test1 requires graphics.")
+    endif()
 endif()
-
-include(GNUInstallDirs)
-
-install(DIRECTORY include/CESengine DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
-
-install(TARGETS ces_engine
-    EXPORT CESengineTargets
-)
-
-install(EXPORT CESengineTargets
-    FILE CESengineTargets.cmake
-    NAMESPACE CESengine::
-    DESTINATION ${CMAKE_INSTALL_DATADIR}/cmake/CESengine
-)
