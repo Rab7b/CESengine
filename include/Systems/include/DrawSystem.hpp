@@ -2,9 +2,9 @@
 #include <SFML/Graphics.hpp>
 #include <vector>
 #include "Engine/Engine.h"
-#include "../Systems/System.h"
-#include "../Types/types.h"
-#include "../Managers/Registry.hpp"
+#include "Systems/System.h"
+#include "Types/types.h"
+#include "Managers/Registry.hpp"
 
 namespace ces {
     class DrawSystem : public System {
