@@ -98,9 +98,6 @@ int main() {
         particles.push_back(p);
     }
 
-    sf::Clock fpsClock;
-    int frameCount = 0;
-
     while (engine.getWindow().isOpen()) {
         engine.run();
 
