@@ -1,8 +1,8 @@
 #pragma once
-#include "../Engine/Engine.h"
-#include "../Systems/System.h"
-#include "../Types/types.h"
-#include "../Managers/Registry.hpp"
+#include "Engine/Engine.h"
+#include "Systems/System.h"
+#include "Types/types.h"
+#include "Managers/Registry.hpp"
 
 namespace ces {
     class MovementSystem : public System {
