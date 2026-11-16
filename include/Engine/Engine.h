@@ -2,8 +2,8 @@
 #include <vector>
 #include <memory>
 #include <SFML/Graphics.hpp>
-#include "../Systems/System.h" 
-#include "../Managers/Registry.hpp"
+#include "Systems/System.h" 
+#include "Managers/Registry.hpp"
 
 namespace ces {
 
