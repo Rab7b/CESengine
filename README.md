@@ -125,7 +125,7 @@ Running on consumer hardware, the engine achieves buttery-smooth frame rates by 
 | :--- | :---: | :--- |
 | **Entity Count** | `1,000,000+` | Contiguous memory pool allocation |
 | **Framerate** | `120+ FPS` | Single-threaded update & batch draw |
-| **GPU Load** | `~5%` | Optimized CPU-side `ces::VertexBuffer` |
+| **GPU Load** | `~5%` | Optimized GPU rendering `ces::VertexBuffer` |
 
 </div>
 
