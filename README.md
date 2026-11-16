@@ -83,32 +83,31 @@ int main() {
 <summary><b>2. Linking with CMake (FetchContent)</b></summary>
 <br />
 
-Drop this into your `CMakeLists.txt` to automatically fetch `CESengine` from GitHub and link it with SFML:
+To integrate **CESengine** into your C++20 project using CMake and `FetchContent`, add the following to your `CMakeLists.txt`:
 
 ```cmake
-cmake_minimum_required(VERSION 3.20)
-project(MyAwesomeSimulation LANGUAGES CXX)
+cmake_minimum_required(VERSION 3.21)
+project(YourGameName LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# Find SFML dependency
-find_package(SFML 3.0 REQUIRED COMPONENTS Graphics Window System Network Audio)
-
-# Automatically download CESengine from GitHub
+# 1. Declare and pull CESengine from GitHub via FetchContent
 include(FetchContent)
 FetchContent_Declare(
     CESengine
-    GIT_REPOSITORY https://github.com/Rab7b/CESengine.git
-    GIT_TAG main
+    GIT_REPOSITORY [https://github.com/Rab7b/CESengine.git](https://github.com/Rab7b/CESengine.git)
+    GIT_TAG        main
 )
 FetchContent_MakeAvailable(CESengine)
 
-# Create your application executable
-add_executable(MySimulation main.cpp)
+# 2. Add your executable target
+add_executable(YourGameName main.cpp)
 
-# Link your app to CES::Engine and SFML libraries
-target_link_libraries(MySimulation PRIVATE CES::Engine sfml-graphics sfml-window sfml-system)
+# 3. Link CESengine to your target
+target_link_libraries(YourGameName PRIVATE 
+    CESengine::ces_engine
+)
 ```
 
 </details>
