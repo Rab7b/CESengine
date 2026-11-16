@@ -13,7 +13,6 @@ namespace ces {
 
         std::vector<std::unique_ptr<T[]>> pages;
 
-        // Ensure the page for a given entity ID exists, allocating it if needed
         inline void ensure_page(size_t entity_id) {
             size_t page_idx = entity_id / PageSize;
             if (page_idx >= pages.size()) {
