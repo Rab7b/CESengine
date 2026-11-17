@@ -7,7 +7,13 @@ if(PROJECT_IS_TOP_LEVEL)
     set(CMAKE_CXX_EXTENSIONS OFF)
 endif()
 
-find_package(SFML REQUIRED COMPONENTS graphics window system)
+# Try finding SFML with explicit hints for Linux package managers
+find_package(SFML REQUIRED COMPONENTS graphics window system 
+    HINTS 
+        /usr/lib/cmake/SFML 
+        /usr/local/lib/cmake/SFML
+        /usr/share/SFML
+)
 
 add_library(ces_engine INTERFACE)
 add_library(CESengine::ces_engine ALIAS ces_engine)
