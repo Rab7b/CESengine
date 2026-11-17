@@ -7,7 +7,7 @@ if(PROJECT_IS_TOP_LEVEL)
     set(CMAKE_CXX_EXTENSIONS OFF)
 endif()
 
-# Automatically download and build SFML via FetchContent
+# Automatically download and build SFML 3 via FetchContent
 include(FetchContent)
 
 set(SFML_BUILD_AUDIO OFF CACHE BOOL "" FORCE)
@@ -17,7 +17,8 @@ set(SFML_BUILD_DOC OFF CACHE BOOL "" FORCE)
 
 FetchContent_Declare(
     SFML
-    URL https://github.com/SFML/SFML/archive/refs/tags/2.6.1.tar.gz
+    URL https://github.com/SFML/SFML/archive/refs/tags/3.0.2.tar.gz
+    DOWNLOAD_EXTRACT_TIMESTAMP TRUE
 )
 FetchContent_MakeAvailable(SFML)
 
@@ -31,15 +32,16 @@ target_include_directories(ces_engine INTERFACE
     $<INSTALL_INTERFACE:include>
 )
 
+# SFML 3 uses modern namespaced targets
 target_link_libraries(ces_engine INTERFACE 
-    sfml-graphics 
-    sfml-window 
-    sfml-system
+    SFML::Graphics 
+    SFML::Window 
+    SFML::System
 )
 
 option(CES_BUILD_EXAMPLES "Build engine examples" ON)
 if(CES_BUILD_EXAMPLES AND PROJECT_IS_TOP_LEVEL)
     add_executable(test1 examples/test1.cpp)
     target_link_libraries(test1 PRIVATE ces_engine)
-    message(STATUS "SFML successfully fetched and linked to CESengine and examples.")
+    message(STATUS "SFML 3 successfully fetched and linked to CESengine and examples.")
 endif()
