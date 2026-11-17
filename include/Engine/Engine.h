@@ -55,33 +55,29 @@ namespace ces {
 		}
 
         inline void run() {
+            ces::Time elapsed = m_clock.restart();
+            this->m_accumulatedTime += elapsed;
+            this->m_frameCount++;
 
-        	while (this->window.isOpen()) {
+            if (this->m_accumulatedTime.asSeconds() >= 1.0f) {
+                this->m_currentFps = static_cast<float>(this->m_frameCount) / this->m_accumulatedTime.asSeconds();
+                this->m_frameCount = 0;
+                this->m_accumulatedTime = sf::Time::Zero;
+            }
 
-            	sf::Time elapsed = m_clock.restart();
-            	this->m_accumulatedTime += elapsed;
-            	this->m_frameCount++;
+            while (const std::optional event = this->window.pollEvent()) {
+                if (event->is<sf::Event::Closed>()) {
+                    this->window.close();
+                }
+            }
 
-            	if (this->m_accumulatedTime.asSeconds() >= 1.0f) {
-                	this->m_currentFps = static_cast<float>(this->m_frameCount) / this->m_accumulatedTime.asSeconds();
-                	this->m_frameCount = 0;
-                	this->m_accumulatedTime = sf::Time::Zero;
-            	}
+            this->window.clear();
 
-            	while (const std::optional event = this->window.pollEvent()) {
-                	if (event->is<sf::Event::Closed>()) {
-                    	this->window.close();
-                	}
-            	}
+            for (auto& system : this->systems) {
+                system->update();
+            }
 
-            	this->window.clear();
-
-            	for (auto& system : this->systems) {
-                	system->update();
-            	}
-
-            	this->window.display();
-        	}
+            this->window.display();
     	}
     };
 }
