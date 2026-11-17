@@ -17,14 +17,11 @@ jobs:
     - name: Setup Ninja
       uses: seanmiddleditch/gha-setup-ninja@v3
 
-    - name: Install Complete SFML 3 X11 Dependencies
+    - name: Install Complete Linux & X11 Dependencies for SFML 3
       run: |
         sudo apt-get update
         sudo apt-get install -y \
-          libx11-dev \
-          libxrandr-dev \
-          libxcursor-dev \
-          libxi-dev \
+          xorg-dev \
           libudev-dev \
           libgl1-mesa-dev \
           libfreetype-dev
@@ -34,3 +31,4 @@ jobs:
 
     - name: Build Project
       run: cmake --build build --config Release
+      
