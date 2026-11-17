@@ -23,5 +23,4 @@ namespace ces {
             this->data[entity.id] = T{};
         }
     };
-
 }
