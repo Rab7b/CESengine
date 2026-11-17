@@ -17,8 +17,20 @@ jobs:
     - name: Setup Ninja
       uses: seanmiddleditch/gha-setup-ninja@v3
 
+    - name: Install System Dependencies for SFML & X11
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y \
+          libx11-dev \
+          libxcursor-dev \
+          libxrandr-dev \
+          libxi-dev \
+          libudev-dev \
+          libgl1-mesa-dev
+
     - name: Configure CMake
       run: cmake -S . -B build -G "Ninja" -DCMAKE_BUILD_TYPE=Release
 
     - name: Build Project
       run: cmake --build build --config Release
+      
