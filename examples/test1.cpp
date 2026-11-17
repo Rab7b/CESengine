@@ -1,4 +1,4 @@
-#include <ces.h>
+#include "../include/ces.h" // or just <ces.h> if you linked it already!
 #include <vector>
 #include <random>
 #include <cmath>
