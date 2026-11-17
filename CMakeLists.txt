@@ -7,13 +7,20 @@ if(PROJECT_IS_TOP_LEVEL)
     set(CMAKE_CXX_EXTENSIONS OFF)
 endif()
 
-# Explicitly point to Ubuntu's multiarch CMake path for SFML
-find_package(SFML REQUIRED COMPONENTS graphics window system 
-    HINTS 
-        /usr/lib/x86_64-linux-gnu/cmake/SFML
-        /usr/lib/cmake/SFML 
-        /usr/local/lib/cmake/SFML
+# Automatically download and build SFML via FetchContent
+include(FetchContent)
+
+# Speed up CI builds by disabling unused SFML modules (Audio, Network, Docs)
+set(SFML_BUILD_AUDIO OFF CACHE BOOL "" FORCE)
+set(SFML_BUILD_NETWORK OFF CACHE BOOL "" FORCE)
+set(SFML_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
+set(SFML_BUILD_DOC OFF CACHE BOOL "" FORCE)
+
+FetchContent_Declare(
+    SFML
+    URL https://github.com/SFML/SFML/archive/refs/tags/2.6.1.tar.gz
 )
+FetchContent_MakeAvailable(SFML)
 
 add_library(ces_engine INTERFACE)
 add_library(CESengine::ces_engine ALIAS ces_engine)
@@ -35,5 +42,5 @@ option(CES_BUILD_EXAMPLES "Build engine examples" ON)
 if(CES_BUILD_EXAMPLES AND PROJECT_IS_TOP_LEVEL)
     add_executable(test1 examples/test1.cpp)
     target_link_libraries(test1 PRIVATE ces_engine)
-    message(STATUS "SFML found successfully and linked to CESengine and examples.")
+    message(STATUS "SFML successfully fetched and linked to CESengine and examples.")
 endif()
