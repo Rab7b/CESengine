@@ -29,4 +29,10 @@ target_link_libraries(ces_engine INTERFACE 
     sfml-window 
     sfml-system
 )
-endif() 
+
+option(CES_BUILD_EXAMPLES "Build engine examples" OFF)
+if(CES_BUILD_EXAMPLES AND PROJECT_IS_TOP_LEVEL)
+    add_executable(test1 examples/test1.cpp)
+    target_link_libraries(test1 PRIVATE ces_engine)
+    message(STATUS "SFML found successfully and linked to CESengine and examples.")
+endif()
