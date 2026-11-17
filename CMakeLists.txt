@@ -7,12 +7,12 @@ if(PROJECT_IS_TOP_LEVEL)
     set(CMAKE_CXX_EXTENSIONS OFF)
 endif()
 
-# Try finding SFML with explicit hints for Linux package managers
+# Explicitly point to Ubuntu's multiarch CMake path for SFML
 find_package(SFML REQUIRED COMPONENTS graphics window system 
     HINTS 
+        /usr/lib/x86_64-linux-gnu/cmake/SFML
         /usr/lib/cmake/SFML 
         /usr/local/lib/cmake/SFML
-        /usr/share/SFML
 )
 
 add_library(ces_engine INTERFACE)
