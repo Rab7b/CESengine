@@ -7,7 +7,6 @@ if(PROJECT_IS_TOP_LEVEL)
     set(CMAKE_CXX_EXTENSIONS OFF)
 endif()
 
-# Find SFML first so the engine can tie into it
 find_package(SFML REQUIRED COMPONENTS graphics window system)
 
 add_library(ces_engine INTERFACE)
@@ -30,5 +29,5 @@ option(CES_BUILD_EXAMPLES "Build engine examples" ON)
 if(CES_BUILD_EXAMPLES AND PROJECT_IS_TOP_LEVEL)
     add_executable(test1 examples/test1.cpp)
     target_link_libraries(test1 PRIVATE ces_engine)
-    message(STATUS "SFML found and linked to ces_engine automatically.")
+    message(STATUS "SFML found successfully and linked to CESengine and examples.")
 endif()
