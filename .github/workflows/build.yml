@@ -26,13 +26,12 @@ jobs:
           libgl1-mesa-dev \
           libfreetype-dev
 
-    - name: Configure CMake
+    - name: Clear Old CMake Cache & Configure
       run: |
-        cmake -S . -B build -G "Ninja" \
-          -DCMAKE_BUILD_TYPE=Release \
-          -DCMAKE_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu \
-          -DCMAKE_INCLUDE_PATH=/usr/include
+        rm -rf build
+        cmake -S . -B build -G "Ninja" -DCMAKE_BUILD_TYPE=Release
 
     - name: Build Project
       run: cmake --build build --config Release
+
       
