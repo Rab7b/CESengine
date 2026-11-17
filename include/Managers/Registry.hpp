@@ -12,14 +12,15 @@ namespace ces {
 
     public:
         Registry() {
-            for (int i = 0; i < maxEntities; ++i) {
-                this->entityPool.push_front(ces::Entity(static_cast<uint32_t>(i)));
+            entityPool.reserve(maxEntities);
+            for (int i = maxEntities - 1; i >= 0; --i) {
+                entityPool.push_back(ces::Entity(static_cast<uint32_t>(i)));
             }
         }
 
         inline ces::Entity createEntity() {
-            ces::Entity e = this->entityPool.front();
-            this->entityPool.pop_front();
+            ces::Entity e = entityPool.back();
+            entityPool.pop_back();
             return e;
         }
 
@@ -30,7 +31,7 @@ namespace ces {
 
         inline void destroyEntity(const ces::Entity& entity) {
             ((this->getPool<Components>().destroy(entity)), ...);
-            this->entityPool.push_front(entity);
+            entityPool.push_back(entity);
         }
 
         template <typename... C>
