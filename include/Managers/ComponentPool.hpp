@@ -15,6 +15,10 @@ namespace ces {
             return this->data[entity.id];
         }
 
+        inline std::vector<T>& getData() {
+            return this->data;
+        }
+
         inline void add(const Entity& entity, const T& component) {
             this->data[entity.id] = component;
         }
