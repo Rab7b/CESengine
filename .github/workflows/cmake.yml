@@ -26,12 +26,37 @@ jobs:
         if: runner.os == 'Windows'
         uses: ilammy/msvc-dev-cmd@v1
 
+      - name: Install Linux Dependencies (SFML 3 & OpenMP)
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            libxrandr-dev \
+            libxcursor-dev \
+            libxi-dev \
+            libudev-dev \
+            libflac-dev \
+            libvorbis-dev \
+            libgl1-mesa-dev \
+            libegl1-mesa-dev \
+            libdrm-dev \
+            libgbm-dev \
+            libfreetype-dev \
+            libopenal-dev \
+            libomp-dev
+
+      - name: Install macOS Dependencies (OpenMP)
+        if: runner.os == 'macOS'
+        run: |
+          brew install libomp
+          echo "OpenMP_ROOT=$(brew --prefix libomp)" >> $GITHUB_ENV
+
       - name: Configure CMake
         run: >
-          cmake -S ${{ github.workspace }}
-          -B ${{ github.workspace }}/build
+          cmake -S "${{ github.workspace }}"
+          -B "${{ github.workspace }}/build"
           -G "${{ matrix.config.generator }}"
           -DCMAKE_BUILD_TYPE=Release
 
       - name: Build
-        run: cmake --build ${{ github.workspace }}/build --config Release --parallel
+        run: cmake --build "${{ github.workspace }}/build" --config Release --parallel
