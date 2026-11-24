@@ -2,6 +2,7 @@
 #include <array>
 #include <cassert>
 #include <cstddef>
+#include <cstdint>
 #include <memory>
 #include <utility>
 #include <vector>
@@ -9,26 +10,26 @@
 
 namespace ces {
 
-    template <typename T, size_t PAGE_SIZE = 4096>
+    template <typename T, std::uint32_t PAGE_SIZE = 4096>
     class ComponentPool {
     private:
-        static constexpr size_t INVALID = maxEntities;
-        using Page = std::array<size_t, PAGE_SIZE>;
+        static constexpr std::uint32_t INVALID = static_cast<std::uint32_t>(maxEntities);
+        using Page = std::array<std::uint32_t, PAGE_SIZE>;
 
         std::vector<std::unique_ptr<Page>> sparsePages;
         std::vector<T> data;
-        std::vector<size_t> denseToEntity;
+        std::vector<std::uint32_t> denseToEntity;
 
-        inline size_t getDenseIndex(size_t entityId) const {
-            size_t pageIdx = entityId / PAGE_SIZE;
+        inline std::uint32_t getDenseIndex(std::uint32_t entityId) const {
+            std::uint32_t pageIdx = entityId / PAGE_SIZE;
             if (pageIdx >= sparsePages.size() || !sparsePages[pageIdx]) {
                 return INVALID;
             }
             return (*sparsePages[pageIdx])[entityId % PAGE_SIZE];
         }
 
-        inline void setDenseIndex(size_t entityId, size_t denseIdx) {
-            size_t pageIdx = entityId / PAGE_SIZE;
+        inline void setDenseIndex(std::uint32_t entityId, std::uint32_t denseIdx) {
+            std::uint32_t pageIdx = entityId / PAGE_SIZE;
             if (pageIdx >= sparsePages.size()) {
                 sparsePages.resize(pageIdx + 1);
             }
@@ -47,9 +48,9 @@ namespace ces {
         }
 
         inline T& get(const Entity& entity) {
-            size_t idx = getDenseIndex(entity.id);
+            std::uint32_t idx = getDenseIndex(entity.id);
             if (idx == INVALID) {
-                idx = data.size();
+                idx = static_cast<std::uint32_t>(data.size());
                 setDenseIndex(entity.id, idx);
                 data.emplace_back();
                 denseToEntity.push_back(entity.id);
@@ -58,7 +59,7 @@ namespace ces {
         }
 
         inline const T& get(const Entity& entity) const {
-            size_t idx = getDenseIndex(entity.id);
+            std::uint32_t idx = getDenseIndex(entity.id);
             assert(idx != INVALID && "Entity does not have this component!");
             return data[idx];
         }
@@ -71,30 +72,30 @@ namespace ces {
             return data;
         }
 
-        inline const std::vector<size_t>& getEntities() const {
+        inline const std::vector<std::uint32_t>& getEntities() const {
             return denseToEntity;
         }
 
         inline void add(const Entity& entity, const T& component) {
-            size_t idx = getDenseIndex(entity.id);
+            std::uint32_t idx = getDenseIndex(entity.id);
             if (idx != INVALID) {
                 data[idx] = component;
                 return;
             }
-            setDenseIndex(entity.id, data.size());
+            setDenseIndex(entity.id, static_cast<std::uint32_t>(data.size()));
             data.push_back(component);
             denseToEntity.push_back(entity.id);
         }
 
         inline void destroy(const Entity& entity) {
-            size_t idx = getDenseIndex(entity.id);
+            std::uint32_t idx = getDenseIndex(entity.id);
             if (idx == INVALID) {
                 return;
             }
 
-            size_t lastIdx = data.size() - 1;
+            std::uint32_t lastIdx = static_cast<std::uint32_t>(data.size() - 1);
             if (idx != lastIdx) {
-                size_t movedEntityId = denseToEntity[lastIdx];
+                std::uint32_t movedEntityId = denseToEntity[lastIdx];
                 data[idx] = std::move(data[lastIdx]);
                 denseToEntity[idx] = movedEntityId;
                 setDenseIndex(movedEntityId, idx);
