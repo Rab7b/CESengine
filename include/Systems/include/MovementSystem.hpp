@@ -19,15 +19,18 @@ namespace ces {
             const auto& vData = vPool.getData();
             const auto& vEntities = vPool.getEntities();
             const int count = static_cast<int>(vData.size());
-
+            
 #pragma omp parallel for schedule(static)
-            for (int i = 0; i (vEntities[i]) };
+            for (int i = 0; i < count; ++i) {
+                Entity entity{};
+                entity.id = vEntities[i];
                 if (tPool.has(entity)) {
                     Transform& t = tPool.get(entity);
                     t.x += vData[i].vx;
                     t.y += vData[i].vy;
                 }
             }
+
         }
     };
 }
