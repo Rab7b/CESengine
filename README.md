@@ -11,7 +11,7 @@
 </p>
 
 <blockquote>
-  Designed for extreme performance, handling <b>1,000,000+ entities at 120+ FPS</b> using contiguous component memory pools and batched hardware rendering via SFML.
+  Designed for extreme performance, handling <b>1,000,000+ entities at 150+ FPS</b> using contiguous component memory pools and batched hardware rendering via SFML.
 </blockquote>
 
 </div>
@@ -50,7 +50,7 @@
 Here is a sneak peek of how clean it is to set up a massive simulation using the engine's registry and systems:
 
 ```cpp
-#include <include/ces.h>
+#include <ces.h>
 
 int main() {
     auto& engine = ces::Engine::getInstance({1280, 720}, "My Game!", false, 1000.0f);
@@ -137,6 +137,14 @@ endif()
 </details>
 
 <br />
+
+## 🎯 Motivation & Goals
+
+<div align="center">
+
+Most game engines today feel way too bloated and intimidating, so I'm building my own lightweight, easy-to-use alternative. Yes, I know it's ironic to call an "easy" tool the Complex Entity System, but keeping things simple is the whole point. I'd really appreciate any feedback or support on what I have so far!
+
+</div>
 
 ## 📊 Performance Benchmarks
 
