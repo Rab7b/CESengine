@@ -1,11 +1,11 @@
 #pragma once
 #include <array>
+#include <cassert>
 #include <cstddef>
-#include <limits>
 #include <memory>
 #include <utility>
 #include <vector>
-#include "Types/types.h"
+#include "../Types/types.h"
 
 namespace ces {
 
@@ -57,8 +57,22 @@ namespace ces {
             return data[idx];
         }
 
+        inline const T& get(const Entity& entity) const {
+            size_t idx = getDenseIndex(entity.id);
+            assert(idx != INVALID && "Entity does not have this component!");
+            return data[idx];
+        }
+
         inline std::vector<T>& getData() {
             return data;
+        }
+
+        inline const std::vector<T>& getData() const {
+            return data;
+        }
+
+        inline const std::vector<size_t>& getEntities() const {
+            return denseToEntity;
         }
 
         inline void add(const Entity& entity, const T& component) {
