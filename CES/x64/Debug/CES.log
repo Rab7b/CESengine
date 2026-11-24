@@ -1,0 +1,5 @@
+﻿  main.cpp
+E:\CES\Engine\Engine.h(32,52): warning C4244: 'argument': conversion from 'float' to 'unsigned int', possible loss of data
+  (compiling source file 'main.cpp')
+  
+  CES.vcxproj -> E:\CES\x64\Debug\CES.exe

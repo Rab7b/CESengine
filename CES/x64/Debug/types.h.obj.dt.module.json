@@ -1,0 +1,14 @@
+{
+    "version": 1,
+    "revision": 0,
+    "rules": [
+        {
+            "primary-output": "CES\\x64\\Debug\\types.obj",
+            "outputs": [
+                "CES\\x64\\Debug\\types.h.obj.dt.module.json",
+                "CES\\x64\\Debug\\types.h.obj.dt.d.json"
+            ],
+            "requires": []
+        }
+    ]
+}

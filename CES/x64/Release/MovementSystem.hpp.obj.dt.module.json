@@ -1,0 +1,14 @@
+{
+    "version": 1,
+    "revision": 0,
+    "rules": [
+        {
+            "primary-output": "CES\\x64\\Release\\MovementSystem.obj",
+            "outputs": [
+                "CES\\x64\\Release\\MovementSystem.hpp.obj.dt.module.json",
+                "CES\\x64\\Release\\MovementSystem.hpp.obj.dt.d.json"
+            ],
+            "requires": []
+        }
+    ]
+}

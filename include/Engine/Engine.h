@@ -29,11 +29,14 @@ namespace ces {
         Engine& operator=(const Engine&) = delete;
 
     public:
-        static Engine& getInstance(ces::Vector2f size, std::string name, bool vsync, float fps) {
+        static Engine& getInstance(ces::Vector2f size, const std::string& name, bool vsync, unsigned int fps) {
             static Engine instance;
+            instance.getWindow().create(
+                ces::VideoMode({ static_cast<unsigned int>(size.x), static_cast<unsigned int>(size.y) }),
+                name
+            );
             instance.getWindow().setFramerateLimit(fps);
             instance.getWindow().setVerticalSyncEnabled(vsync);
-            instance.getWindow().setSize({ static_cast<unsigned int>(size.x), static_cast<unsigned int>(size.y) });
             return instance;
         }
 

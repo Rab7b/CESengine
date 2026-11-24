@@ -1,4 +1,6 @@
 #pragma once
+#include <algorithm>
+#include <cstddef>
 #include "Engine/Engine.h"
 #include "Systems/System.h"
 #include "Types/types.h"
@@ -11,16 +13,15 @@ namespace ces {
 
         void update() override {
             auto& registry = this->engine.getRegistry();
-            auto& transformPool = registry.getPool<Transform>();
-            auto& velocityPool = registry.getPool<Velocity>();
+            auto& tData = registry.getPool<Transform>().getData();
+            const auto& vData = registry.getPool<Velocity>().getData();
 
-            for (uint32_t i = 0; i < maxEntities; ++i) {
-                Entity entity{ i };
-                auto& t = transformPool.get(entity);
-                auto& v = velocityPool.get(entity);
+            const int count = static_cast<int>(std::min(tData.size(), vData.size()));
 
-                t.x += v.vx;
-                t.y += v.vy;
+#pragma omp parallel for schedule(static)
+            for (int i = 0; i < count; ++i) {
+                tData[i].x += vData[i].vx;
+                tData[i].y += vData[i].vy;
             }
         }
     };

@@ -1,4 +1,5 @@
 #pragma once
+#include <cstdint>
 #include <tuple>
 #include <vector>
 #include "Managers/ComponentPool.hpp"
@@ -8,20 +9,19 @@ namespace ces {
     class Registry {
     private:
         std::tuple<ComponentPool<Components>...> componentPools;
-        std::vector<ces::Entity> entityPool; 
+        std::vector<ces::Entity> freeEntities;
+        uint32_t nextEntityId = 0;
 
     public:
-        Registry() {
-            entityPool.reserve(maxEntities);
-            for (int i = maxEntities - 1; i >= 0; --i) {
-                entityPool.push_back(ces::Entity(static_cast<uint32_t>(i)));
-            }
-        }
+        Registry() = default;
 
         inline ces::Entity createEntity() {
-            ces::Entity e = entityPool.back();
-            entityPool.pop_back();
-            return e;
+            if (!freeEntities.empty()) {
+                ces::Entity e = freeEntities.back();
+                freeEntities.pop_back();
+                return e;
+            }
+            return ces::Entity(nextEntityId++);
         }
 
         template <typename T>
@@ -31,7 +31,7 @@ namespace ces {
 
         inline void destroyEntity(const ces::Entity& entity) {
             ((this->getPool<Components>().destroy(entity)), ...);
-            entityPool.push_back(entity);
+            freeEntities.push_back(entity);
         }
 
         template <typename... C>
@@ -40,7 +40,7 @@ namespace ces {
         }
 
         template <typename... C>
-        inline void removeComponent(const ces::Entity& entity, const C&... components) {
+        inline void removeComponent(const ces::Entity& entity) {
             (this->getPool<C>().destroy(entity), ...);
         }
     };

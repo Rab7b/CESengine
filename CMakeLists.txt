@@ -7,7 +7,6 @@ if(PROJECT_IS_TOP_LEVEL)
     set(CMAKE_CXX_EXTENSIONS OFF)
 endif()
 
-# Automatically download and build SFML 3 via FetchContent
 include(FetchContent)
 
 set(SFML_BUILD_AUDIO OFF CACHE BOOL "" FORCE)
@@ -32,7 +31,6 @@ target_include_directories(ces_engine INTERFACE
     $<INSTALL_INTERFACE:include>
 )
 
-# SFML 3 uses modern namespaced targets
 target_link_libraries(ces_engine INTERFACE 
     SFML::Graphics 
     SFML::Window 

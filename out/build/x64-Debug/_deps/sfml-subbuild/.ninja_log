@@ -1,0 +1,21 @@
+# ninja log v7
+2	56	8167352266504936	sfml-populate-prefix/src/sfml-populate-stamp/sfml-populate-mkdir	d3439db2dc5fb20
+2	56	8167352266504936	E:/CES/out/build/x64-Debug/_deps/sfml-subbuild/sfml-populate-prefix/src/sfml-populate-stamp/sfml-populate-mkdir	d3439db2dc5fb20
+56	1777	8167352283717217	sfml-populate-prefix/src/sfml-populate-stamp/sfml-populate-download	9cfefb2ed0bd7fc
+56	1777	8167352283717217	E:/CES/out/build/x64-Debug/_deps/sfml-subbuild/sfml-populate-prefix/src/sfml-populate-stamp/sfml-populate-download	9cfefb2ed0bd7fc
+1777	1828	8167352284227236	sfml-populate-prefix/src/sfml-populate-stamp/sfml-populate-update	746e748da59a0c6
+1777	1828	8167352284227236	E:/CES/out/build/x64-Debug/_deps/sfml-subbuild/sfml-populate-prefix/src/sfml-populate-stamp/sfml-populate-update	746e748da59a0c6
+1829	1879	8167352284742395	sfml-populate-prefix/src/sfml-populate-stamp/sfml-populate-patch	cc17fb028e3869e3
+1829	1879	8167352284742395	E:/CES/out/build/x64-Debug/_deps/sfml-subbuild/sfml-populate-prefix/src/sfml-populate-stamp/sfml-populate-patch	cc17fb028e3869e3
+1879	1931	8167352285242427	sfml-populate-prefix/src/sfml-populate-stamp/sfml-populate-configure	9e812ecfeaafecda
+1879	1931	8167352285242427	E:/CES/out/build/x64-Debug/_deps/sfml-subbuild/sfml-populate-prefix/src/sfml-populate-stamp/sfml-populate-configure	9e812ecfeaafecda
+1931	1980	8167352285747603	sfml-populate-prefix/src/sfml-populate-stamp/sfml-populate-build	cc1de45072e66289
+1931	1980	8167352285747603	E:/CES/out/build/x64-Debug/_deps/sfml-subbuild/sfml-populate-prefix/src/sfml-populate-stamp/sfml-populate-build	cc1de45072e66289
+1980	2033	8167352286257635	sfml-populate-prefix/src/sfml-populate-stamp/sfml-populate-install	de9b3e11ddb27a6f
+1980	2033	8167352286257635	E:/CES/out/build/x64-Debug/_deps/sfml-subbuild/sfml-populate-prefix/src/sfml-populate-stamp/sfml-populate-install	de9b3e11ddb27a6f
+2033	2084	8167352286792759	sfml-populate-prefix/src/sfml-populate-stamp/sfml-populate-test	a8f328c74a777f1d
+2033	2084	8167352286792759	E:/CES/out/build/x64-Debug/_deps/sfml-subbuild/sfml-populate-prefix/src/sfml-populate-stamp/sfml-populate-test	a8f328c74a777f1d
+2084	2156	8167352287512840	CMakeFiles/sfml-populate-complete	c6e4b2017bb62a8b
+2084	2156	8167352287512840	sfml-populate-prefix/src/sfml-populate-stamp/sfml-populate-done	c6e4b2017bb62a8b
+2084	2156	8167352287512840	E:/CES/out/build/x64-Debug/_deps/sfml-subbuild/CMakeFiles/sfml-populate-complete	c6e4b2017bb62a8b
+2084	2156	8167352287512840	E:/CES/out/build/x64-Debug/_deps/sfml-subbuild/sfml-populate-prefix/src/sfml-populate-stamp/sfml-populate-done	c6e4b2017bb62a8b
