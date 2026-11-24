@@ -1,22 +1,37 @@
-#include "../include/ces.h"
-#include <vector>
-#include <random>
+#include "../include/ces.h" // or #include <ces.h>
 #include <cmath>
-#include <iostream>
+#include <cstdint>
+#include <functional>
+#include <string>
+#include <thread>
 
-float getRandom(float min, float max) {
-    static std::random_device rd;
-    static std::mt19937 gen(rd());
-    std::uniform_real_distribution<float> dis(min, max);
-    return dis(gen);
+namespace {
+    inline float fastRandom(float min, float max) {
+        thread_local std::uint32_t state = []() {
+            const auto tid = std::hash<std::thread::id>{}(std::this_thread::get_id());
+            const std::uint32_t seed = static_cast<std::uint32_t>(tid ^ 0x9E3779B9u);
+            return seed != 0u ? seed : 1337u;
+            }();
+
+        state ^= state << 13;
+        state ^= state >> 17;
+        state ^= state << 5;
+
+        const float normalized = static_cast<float>(state) * (1.0f / 4294967296.0f);
+        return min + normalized * (max - min);
+    }
 }
 
 int main() {
     constexpr unsigned int SCREEN_WIDTH = 1280;
     constexpr unsigned int SCREEN_HEIGHT = 720;
+    constexpr float SCREEN_WIDTH_F = static_cast<float>(SCREEN_WIDTH);
+    constexpr float SCREEN_HEIGHT_F = static_cast<float>(SCREEN_HEIGHT);
+    constexpr float TWO_PI = 6.2831853f;
+    constexpr std::size_t PARTICLE_COUNT = 1000001;
 
     auto& engine = ces::Engine::getInstance(
-        { static_cast<float>(SCREEN_WIDTH), static_cast<float>(SCREEN_HEIGHT) },
+        { SCREEN_WIDTH_F, SCREEN_HEIGHT_F },
         "CES Engine - Black Hole",
         false,
         1000.0f
@@ -26,75 +41,78 @@ int main() {
     engine.addSystem<ces::DrawSystem>();
 
     auto& registry = engine.getRegistry();
+    auto& transformPool = registry.getPool<ces::Transform>();
+    auto& velocityPool = registry.getPool<ces::Velocity>();
 
-    constexpr size_t PARTICLE_COUNT = 1000000;
-    std::vector<ces::Entity> particles;
-    particles.reserve(PARTICLE_COUNT);
+    const float centerX = SCREEN_WIDTH_F * 0.5f;
+    const float centerY = SCREEN_HEIGHT_F * 0.5f;
+    const ces::Color defaultColor(100, 200, 255);
 
-    float centerX = SCREEN_WIDTH / 2.0f;
-    float centerY = SCREEN_HEIGHT / 2.0f;
+    for (std::size_t i = 0; i < PARTICLE_COUNT; ++i) {
+        const ces::Entity p = registry.createEntity();
 
-    for (size_t i = 0; i < PARTICLE_COUNT; ++i) {
-        ces::Entity p = registry.createEntity();
+        const float radius = fastRandom(30.0f, 550.0f);
+        const float angle = fastRandom(0.0f, TWO_PI);
+        const float sinA = std::sin(angle);
+        const float cosA = std::cos(angle);
 
-        float radius = getRandom(30.0f, 550.0f);
-        float angle = getRandom(0.0f, 6.2831853f);
-
-        float startX = centerX + std::cos(angle) * radius;
-        float startY = centerY + std::sin(angle) * radius;
-
-        registry.getPool<ces::Transform>().get(p) = {
-            startX,
-            startY,
-            getRandom(1.2f, 3.2f),
+        transformPool.add(p, {
+            centerX + cosA * radius,
+            centerY + sinA * radius,
+            fastRandom(1.2f, 3.2f),
             0.1f,
-            ces::Color(100, 200, 255) 
-        };
+            defaultColor
+            });
 
-        registry.getPool<ces::Velocity>().get(p) = {
-            -std::sin(angle) * getRandom(0.1f, 0.1f),
-             std::cos(angle) * getRandom(0.1f, 0.1f)
-        };
-
-        particles.push_back(p);
+        velocityPool.add(p, {
+            -sinA * 0.1f,
+             cosA * 0.1f
+            });
     }
+
+    auto& transforms = transformPool.getData();
+    auto& velocities = velocityPool.getData();
+    const int count = static_cast<int>(transforms.size());
+
+    int titleFrameCounter = 0;
 
     while (engine.getWindow().isOpen()) {
         engine.run();
 
-        engine.getWindow().setTitle("CES Engine - Black Hole | FPS: " + std::to_string(static_cast<int>(engine.getFPS())));
+        if (++titleFrameCounter >= 30) {
+            engine.getWindow().setTitle(
+                "CES Engine - Black Hole | FPS: " + std::to_string(static_cast<int>(engine.getFPS()))
+            );
+            titleFrameCounter = 0;
+        }
 
-        auto& transforms = registry.getPool<ces::Transform>().getData();
-        auto& velocities = registry.getPool<ces::Velocity>().getData();
-
-        for (size_t i = 0; i < PARTICLE_COUNT; ++i) {
+#pragma omp parallel for schedule(static)
+        for (int i = 0; i < count; ++i) {
             auto& t = transforms[i];
             auto& v = velocities[i];
 
-            float dx = centerX - t.x;
-            float dy = centerY - t.y;
-            float distSq = dx * dx + dy * dy + 80.0f;
-            float dist = std::sqrt(distSq);
+            const float dx = centerX - t.x;
+            const float dy = centerY - t.y;
+            const float distSq = dx * dx + dy * dy + 80.0f;
+            const float invDist = 1.0f / std::sqrt(distSq);
+            const float pullStrength = 2400.0f / distSq;
 
-            float invDist = 1.0f / dist;
-            float pullStrength = 2400.0f / distSq;
+            const float dirX = dx * invDist;
+            const float dirY = dy * invDist;
 
-            v.vx += (dx * invDist) * pullStrength - (dy * invDist) * 0.35f;
-            v.vy += (dy * invDist) * pullStrength + (dx * invDist) * 0.35f;
+            v.vx = (v.vx + dirX * pullStrength - dirY * 0.35f) * 0.96f;
+            v.vy = (v.vy + dirY * pullStrength + dirX * 0.35f) * 0.96f;
 
-            v.vx *= 0.96f;
-            v.vy *= 0.96f;
+            if (distSq < 225.0f || t.x < 0.0f || t.x > SCREEN_WIDTH_F || t.y < 0.0f || t.y > SCREEN_HEIGHT_F) {
+                const float angle = fastRandom(0.0f, TWO_PI);
+                const float radius = fastRandom(500.0f, 650.0f);
+                const float sinA = std::sin(angle);
+                const float cosA = std::cos(angle);
 
-            t.x += v.vx;
-            t.y += v.vy;
-
-            if (distSq < (15.0f * 15.0f) || t.x < 0.0f || t.x > SCREEN_WIDTH || t.y < 0.0f || t.y > SCREEN_HEIGHT) {
-                float angle = getRandom(0.0f, 6.2831853f);
-                float radius = getRandom(500.0f, 650.0f);
-                t.x = centerX + std::cos(angle) * radius;
-                t.y = centerY + std::sin(angle) * radius;
-                v.vx = -std::sin(angle) * getRandom(0.1f, 0.1f);
-                v.vy = std::cos(angle) * getRandom(0.1f, 0.1f);
+                t.x = centerX + cosA * radius;
+                t.y = centerY + sinA * radius;
+                v.vx = -sinA * 0.1f;
+                v.vy = cosA * 0.1f;
             }
         }
     }
