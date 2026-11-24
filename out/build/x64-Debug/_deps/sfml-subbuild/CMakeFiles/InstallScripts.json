@@ -1,7 +1,0 @@
-{
-	"InstallScripts" : 
-	[
-		"E:/CES/out/build/x64-Debug/_deps/sfml-subbuild/cmake_install.cmake"
-	],
-	"Parallel" : false
-}
