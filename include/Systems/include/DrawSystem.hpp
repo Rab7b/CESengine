@@ -1,5 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include <algorithm>
 #include <cstddef>
 #include <vector>
 #include "Engine/Engine.h"
@@ -25,12 +26,13 @@ namespace ces {
                 return;
             }
 
-            if (count != this->allocatedCount) {
-                this->staging.resize(count);
-                if (!this->vertices.create(count)) {
+            if (count > this->allocatedCount) {
+                const std::size_t newCapacity = std::max(count, this->allocatedCount + (this->allocatedCount / 2));
+                this->staging.resize(newCapacity);
+                if (!this->vertices.create(newCapacity)) {
                     return;
                 }
-                this->allocatedCount = count;
+                this->allocatedCount = newCapacity;
             }
 
 #pragma omp parallel for schedule(static)
@@ -39,8 +41,10 @@ namespace ces {
                 this->staging[i] = sf::Vertex{ {t.x, t.y}, t.color };
             }
 
-            this->vertices.update(this->staging.data());
-            this->window.draw(this->vertices);
+            if (!this->vertices.update(this->staging.data(), count, 0)) {
+                return;
+            }
+            this->window.draw(this->vertices, 0, count);
         }
     };
 }
