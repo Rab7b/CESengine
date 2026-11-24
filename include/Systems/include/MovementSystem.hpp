@@ -1,5 +1,6 @@
 #pragma once
 #include <cstddef>
+#include <cstdint>
 #include "Engine/Engine.h"
 #include "Systems/System.h"
 #include "Types/types.h"
@@ -20,8 +21,7 @@ namespace ces {
             const int count = static_cast<int>(vData.size());
 
 #pragma omp parallel for schedule(static)
-            for (int i = 0; i < count; ++i) {
-                const Entity entity{ vEntities[i] };
+            for (int i = 0; i (vEntities[i]) };
                 if (tPool.has(entity)) {
                     Transform& t = tPool.get(entity);
                     t.x += vData[i].vx;
