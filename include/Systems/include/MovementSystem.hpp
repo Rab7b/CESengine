@@ -1,5 +1,4 @@
 #pragma once
-#include <algorithm>
 #include <cstddef>
 #include "Engine/Engine.h"
 #include "Systems/System.h"
@@ -13,15 +12,21 @@ namespace ces {
 
         void update() override {
             auto& registry = this->engine.getRegistry();
-            auto& tData = registry.getPool<Transform>().getData();
-            const auto& vData = registry.getPool<Velocity>().getData();
+            auto& tPool = registry.getPool<Transform>();
+            const auto& vPool = registry.getPool<Velocity>();
 
-            const int count = static_cast<int>(std::min(tData.size(), vData.size()));
+            const auto& vData = vPool.getData();
+            const auto& vEntities = vPool.getEntities();
+            const int count = static_cast<int>(vData.size());
 
 #pragma omp parallel for schedule(static)
             for (int i = 0; i < count; ++i) {
-                tData[i].x += vData[i].vx;
-                tData[i].y += vData[i].vy;
+                const Entity entity{ vEntities[i] };
+                if (tPool.has(entity)) {
+                    Transform& t = tPool.get(entity);
+                    t.x += vData[i].vx;
+                    t.y += vData[i].vy;
+                }
             }
         }
     };
