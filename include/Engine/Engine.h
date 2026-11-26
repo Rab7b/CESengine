@@ -37,6 +37,7 @@ namespace ces {
             );
             instance.getWindow().setFramerateLimit(fps);
             instance.getWindow().setVerticalSyncEnabled(vsync);
+
             return instance;
         }
 
