@@ -2,6 +2,7 @@
 #include <cstdint>
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
+#include <vector>
 
 namespace ces {
 
@@ -11,6 +12,7 @@ namespace ces {
 
 	struct Entity {
 		std::uint32_t id{};
+		std::vector<std::uint32_t> component_ids{};
 	};
 
 	struct Transform {
